@@ -1,26 +1,21 @@
-
-
 import React from 'react'
-import { delay } from '@/lib/delay'
-import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
-import { connectDB } from '@/lib/dbconnect'
-import { Iuser, User } from '../../../../models/user.model'
-import Sidebar from '@/components/ClientSide/sidebar'
-import Navbar from '@/components/Navbar'
+import SideBar from '@/components/clientCompo/SideBar'
 
-const ClientLayout = async ({ children }: { children: React.ReactNode }) => {
-
-
+const ClientLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
-      <main>
+    <div className=" fixed  inset-0 flex px-[6%] py-[3%]">
 
-        <div className="h-fit overflow-hidden  flex flex-row md:m-[5%] ">
-          <Sidebar />
+
+      <div className="flex flex-1  rounded-[20px] overflow-hidden shadow-[0_0_0_1px_#1e1e1e,0_40px_80px_rgba(0,0,0,0.6)]">
+
+        <SideBar />
+
+        {/* Page content — changes per route */}
+        <main className="flex-1 border-l-2   border-red-200 rounded-r-[18px] ">
           {children}
-       </div>
-      </main>
+        </main>
+
+      </div>
     </div>
   )
 }

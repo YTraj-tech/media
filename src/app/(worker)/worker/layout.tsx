@@ -1,9 +1,12 @@
+import { WorkerProvider } from '@/context/workerContext'
 import React from 'react'
 
-const WorkerLayout = ({children}:{children:React.ReactNode}) => {
+const WorkerLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
-      {children}
+      <WorkerProvider>
+        {children}
+      </WorkerProvider>
     </div>
   )
 }

@@ -1,51 +1,119 @@
-import { auth } from "@clerk/nextjs/server";
-import { NextRequest, NextResponse } from "next/server";
-import { connectDB } from "@/lib/dbconnect";
+import { NextResponse, NextRequest } from "next/server";
 import { Worker } from "../../../../models/workers.model";
+import { auth } from "@clerk/nextjs/server";
+import { AwardIcon, ReceiptRussianRubleIcon } from "lucide-react";
+import { connectDB } from "@/lib/dbconnect";
+import { UploadToCloudinary } from "@/lib/uploadToCloudinary";
 
-export async function POST(req: NextRequest) {
-  try {
-    const { userId } = await auth();
 
-        await connectDB();
 
+
+
+interface Iveicle {
+    licence: string,
+    rcbook: string
+}
+
+interface Ilocation {
+    lat: number,
+    lng: number
+}
+
+
+
+interface Iworkers {
+    workerId: string,
+    isActive: boolean,
+    isVerified: boolean,
+    rating: number,
+    totalTaskCompleted: number,
+    vehicalType: string,
+    lisence: string,
+    status: 'WORKING' | 'FREE'
+    vehicelProfile: Iveicle,
+    gender: 'MALE' | 'FEMALE'
+    location: Ilocation
+}
+
+export const POST = async (req: NextRequest) => {
+
+    const { userId } = await auth()
 
     if (!userId) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 })
     }
 
-    const body = await req.json();
-    const { vehicalType, gender } =  body;
-   
-    // Validate required fields from body
-    if (!vehicalType) {
-      return NextResponse.json(
-        { error: "vehicalType is required" },
-        { status: 400 }
-      );
+    try {
+        await connectDB()
+
+        const formData = await req.formData()
+
+        const licenseFile = formData.get('licenseImage') as File
+        const rcbookFile = formData.get('rcbookImage') as File
+
+        const vehicalType = formData.get('vehicalType') as string
+        const gender = formData.get('gender') as string
+
+
+        if (!vehicalType || !gender) {
+            return NextResponse.json({ message: "input fields are required" }, { status: 400 })
+        }
+
+        if (!licenseFile || !rcbookFile) {
+            return NextResponse.json({ message: "Please upload the img" }, { status: 400 })
+        }
+
+        const existingdata = await Worker.findOne({ workerId: userId })
+
+        if (existingdata && existingdata.role === "worker") {
+            return NextResponse.json({ message: "You are not worker to create this profile" }, { status: 403 })
+        }
+
+        const licenceUpload = await UploadToCloudinary(licenseFile, "worker/licence");
+        const rcbookUpload = await UploadToCloudinary(rcbookFile, 'worker/rcbook')
+
+        if (existingdata) {
+            const updateData = await Worker.findOneAndUpdate({ workerId: userId },
+                {
+                    vehicalType: vehicalType,
+                    gender: gender,
+                    vehicelProfile: {
+                        licence: licenceUpload.secure_url,
+                        rcbook: rcbookUpload.secure_url
+                    }
+                },
+                {
+                    new: true
+                }
+            )
+
+            return NextResponse.json({ message: "updated the data sucessfully" }, { status: 200 })
+        }
+
+
+        const createData = await Worker.create({
+            workerId: userId,
+            vehicalType,
+            gender,
+            vehicelProfile: {
+                licence: licenceUpload.secure_url,
+                rcbook: rcbookUpload.secure_url
+            }
+        })
+
+        return NextResponse.json({ message: "Created the profile sucessfully" }, { status: 201 })
+
+    } catch (err) {
+        console.log(err)
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 })
     }
-
-
-  
-
-    const worker = await Worker.create({
-      workerId: userId,       // Clerk user ID
-      vehicalType,            // required from body
-      gender: gender || "MALE",
-    });
-
-    return NextResponse.json(
-      { message: "Worker profile created successfully", worker },
-      { status: 201 }
-    );
-  } catch (error) {
-    console.error("Error creating worker profile:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
-  }
 }
+
+
+
+
+
+
+
+
+

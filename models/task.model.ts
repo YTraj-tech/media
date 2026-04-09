@@ -1,26 +1,26 @@
 import mongoose, { Schema, Types, model, models } from "mongoose";
 
 interface Itask {
-    clientId:string
-    workerId: string[]
+    clientId: Types.ObjectId
+    workerId: Types.ObjectId[]
     vehicalType: string
     startDate: Date,
     numberOfWorker: number,
-    stopit: boolean,  //client will stop it 
-    iscompleted: boolean,
+    iscompleted: "NO" | "TRACKING" | "YES",
     review: string
 }
 
 
 const TaskSchema = new Schema<Itask>({
     clientId: {
-        type: String,
-         required: true
+        type: Schema.Types.ObjectId,
+        ref:"client",
+        required: true
     },
     workerId: [
         {
-            type:String,
-            required: true
+            type: Schema.Types.ObjectId,
+            ref:"Worker"
         }
     ],
     vehicalType: {
@@ -33,15 +33,14 @@ const TaskSchema = new Schema<Itask>({
     },
     numberOfWorker: {
         type: Number,
-        default: 0
+        default: 0,
+        required:true
     },
-    stopit: {
-        type: Boolean,
-        default: false
-    },
+   
     iscompleted: {
-         type:Boolean,
-        default: false
+        type:String,
+        enum:["NO" , "TRACKING" , "YES"],
+        default: "NO"
     },
     review: {
         type: String,

@@ -9,6 +9,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser();
 
+
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Dashboard', href: '/dashboard' },
@@ -23,8 +24,8 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0 group">
-            <div className="text-2xl font-bold bg-gradient-to-r from-sky-600 to-blue-600 bg-clip-text text-transparent group-hover:from-sky-700 group-hover:to-blue-700 transition-all duration-300">
+          <Link href="/">
+            <div className="text-3xl font-bold ">
               Logo
             </div>
           </Link>
@@ -134,7 +135,7 @@ export default function Navbar() {
                   </Link>
                   <Link
                     href="/sign-up"
-                    className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-sky-500 to-blue-600 rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all"
+                    className="px-4 py-2 text-sm font-medium text-white bg-linear-to-r from-sky-500 to-blue-600 rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all"
                     onClick={() => setIsOpen(false)}
                   >
                     Sign Up

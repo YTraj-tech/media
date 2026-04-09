@@ -114,6 +114,7 @@ const isPublicRoute = createRouteMatcher([
 
 const isClientRoute = createRouteMatcher([
   "/dashboard(.*)",
+  "/"
 ]);
 
 const isWorkerRoute = createRouteMatcher([
@@ -121,7 +122,7 @@ const isWorkerRoute = createRouteMatcher([
 ]);
 
 const isadminRoutes = createRouteMatcher([
-  '/admin(.*)',
+  '/Admin(.*)',
   '/'
 ])
 
@@ -169,9 +170,6 @@ const clerkHandlerLogic = async (auth: any, req: NextRequest) => {
     }
 
 
-    // =========================
-    // 🔥 STRICT ROLE LOCK
-    // =========================
 
     if (dbUser.role === "worker") {
       // 🚫 ONLY allow /worker
@@ -186,10 +184,10 @@ const clerkHandlerLogic = async (auth: any, req: NextRequest) => {
         console.log("⛔ Client blocked from:", path);
         return NextResponse.redirect(new URL("/dashboard", req.url));
       }
-    } else if(dbUser.role==="admin"){
+    } else if(dbUser.role==="Admin"){
         if (!isadminRoutes(req)) {
           console.log("Admin blocked from",path);
-          return NextResponse.redirect(new URL('/admin',req.url))
+          return NextResponse.redirect(new URL('/Admin',req.url))
         }
     }
     else {

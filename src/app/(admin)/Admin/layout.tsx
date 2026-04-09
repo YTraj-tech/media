@@ -1,9 +1,13 @@
 import React from 'react'
+import { AdminProvider } from '@/context/AdminContext'
 
-const AdminLayout = ({children}:{children:React.ReactNode}) => {
+
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
-       {children}
+      <AdminProvider>
+        {children}
+     </AdminProvider>
     </div>
   )
 }

@@ -1,10 +1,16 @@
+import HeroSection from '@/components/PublicUI/HeroSection'
+import Movingtext from '@/components/PublicUI/Movingtext'
+import Note from '@/components/PublicUI/Note'
+import React from 'react'
 
-
-
-export default function publicpage() {
-    return(
-        <div>
-        <h1>hello</h1> 
-        </div>
-    )
+const PublicPage = () => {
+  return (
+    <div className='mt-5'>
+      <HeroSection/>
+      <Note/>
+      <Movingtext/>
+    </div>
+  )
 }
+
+export default PublicPage

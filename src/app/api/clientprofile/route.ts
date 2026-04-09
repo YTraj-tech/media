@@ -1,9 +1,7 @@
+import { NextRequest, NextResponse } from "next/server";
 import { client } from "../../../../models/client.model";
-import mongoose from "mongoose";
 import { auth } from "@clerk/nextjs/server";
-import { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
-import { User } from "../../../../models/user.model";
+import { connectDB } from "@/lib/dbconnect";
 
 export interface Iclient {
     clientId: string,
@@ -11,59 +9,66 @@ export interface Iclient {
     companyType: string,
     purpose: string,
     name: string,
-    Employes: number,
+    Employes: string,
     completedTask: number
 }
 
 
-
-export interface Iuser {
-    clerkId: string,
-    email: string,
-    name: string,
-    role: "client" | "worker" | "Admin"
-}
-
-
-export  async function POST(req: NextRequest) {
+export const POST = async (req: NextRequest) => {
     const { userId } = await auth()
 
+    if (!userId) {
+        return NextResponse.json({ message: "Unauthorized" }, { status: 404 })
+    }
     try {
+        await connectDB()
+        const body = await req.json();
+        const { companyName, companyType, purpose, name, Employes } = body
 
-        const body = await req.json()
-        const { companyName, companyType, purpose, name, Employes, completedTask } =  body
+        const alredyExits = await client.findOne({ companyName: companyName })
 
-        const existingCompany = await client.findOne({companyName})
-
-        if (existingCompany) {
-            return NextResponse.json( { message: "Company name has been alredy taken" },{ status: 401 })
+        if (alredyExits && alredyExits.clientId !== userId) {
+            return NextResponse.json({ message: "Company name alredy exist" }, { status: 401 })
         }
 
-        const userrole = await User.findOne({clerkId:userId})
+        const existingprofile = await client.findOne({ clientId: userId })
 
-        if (!userrole) {
-            return NextResponse.json({message:"user not found"},{status:404})
+        if (!existingprofile) {
+            const createProfile = await client.create({
+                clientId: userId,
+                companyName,
+                companyType,
+                purpose,
+                name,
+                Employes,
+                completedTask: 0,
+            })
+            return NextResponse.json({
+                message: "Profile created",
+                data: createProfile
+            }, { status: 201 })
+
+        } else {
+            const updateData = await client.findOneAndUpdate({ clientId: userId }, {
+                companyName,
+                companyType,
+                purpose,
+                name,
+                Employes
+            },
+                { new: true }
+            )
+            return NextResponse.json({
+                message: "Profile updated",
+                data: updateData
+            }, { status: 201 })
+
         }
 
-        if (userrole.role !== "client") {
-            return NextResponse.json({ message: "Your are not the client to make the profile" },{ status: 404 })
-        }
-
-        await client.create({
-            clientId: userId,
-            companyName,
-            companyType,
-            purpose ,
-            name ,
-            Employes,
-            completedTask:0
-        })
-
-         return NextResponse.json({message:"Created the prfile succesfully"},{status:201})
-
+        return NextResponse.json({ message: "the data updated sucessfull" }, { status: 200 })
 
     } catch (err) {
         console.log(err)
-        NextResponse.json({message:"internal server error"},{status:500})
+        return NextResponse.json({ message: "INTERNAL server error" }, { status: 500 })
     }
 }

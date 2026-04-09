@@ -7,7 +7,7 @@ export interface Iclient {
   companyType:string,
   purpose:string,
   name:string,
-  Employes:number,
+  Employes:string,
   completedTask:number
 }
 
@@ -34,11 +34,12 @@ const ClientSchema = new Schema<Iclient>({
         required:true
     },
     Employes:{
-        type:Number,
+        type:String,
         required:true
     },
     completedTask:{
-        type:Number
+        type:Number,
+        default:0
     }
 })
 
