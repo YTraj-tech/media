@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.4",
+    "@netlify/plugin-nextjs": "^5.15.9",
     "@tabler/icons-react": "^3.41.1",
     "class-variance-authority": "^0.7.1",
     "cloudinary": "^2.9.0",
