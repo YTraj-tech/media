@@ -82,6 +82,7 @@ export const AdminProvider = ({ children }: Iprops) => {
             const data = await response.json()
             console.log(data)
             setfreeWorkers(data.data)
+        
             setloading(false)
 
         } catch (error) {
@@ -106,6 +107,7 @@ export const AdminProvider = ({ children }: Iprops) => {
         await fetchfreeWorkers()
            setloading(false)
         } catch (err) {
+            console.log(err)
             setloading(false)
         }
     }

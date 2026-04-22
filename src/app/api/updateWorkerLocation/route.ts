@@ -49,7 +49,7 @@ export const PATCH = async (req: NextRequest) => {
             return NextResponse.json({ message: "Worker Not Found" }, { status: 404 })
         }
 
-        const ActiveTaskOfWorker = await Task.findOne({ workerId: { $in: [existingWorker._id] }, iscompleted: 'TRACKING' })
+        const ActiveTaskOfWorker = await Task.findOne({ workerId:existingWorker._id, iscompleted: 'TRACKING' })
 
         if (!ActiveTaskOfWorker) {
             return NextResponse.json({ message: "You are not assigned to any task" }, { status: 401 })

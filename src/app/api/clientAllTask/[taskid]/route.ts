@@ -4,7 +4,7 @@ import { auth } from "@clerk/nextjs/server";
 import { connectDB } from "@/lib/dbconnect";
 
 
-export const GET = async( req:NextRequest , {params}:{params:{taskid:string}}) => {
+export const GET = async( req:NextRequest , {params}:{params:Promise<{taskid:string}>}) => {
     const {userId} = await auth()
     if (!userId) {
         return NextResponse.json({error:"unauthorized"},{status:401})

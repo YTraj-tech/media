@@ -45,15 +45,7 @@ export const PATCH = async (req: NextRequest, { params }: { params: Promise<{ id
         }
 
 
-        const updateTaskToWorker = await Task.findByIdAndUpdate(
-            {
-                _id: id
-            },
-            {
-                $push: { workerId: workerObjectId }
-            },
-            { new: true }
-        )
+        const updateTaskToWorker = await Task.findByIdAndUpdate({_id: id},{$push: { workerId: workerObjectId }},{ new: true })
 
         await Worker.findOneAndUpdate({ _id: workerObjectId }, { $set: { status: "WORKING" } })
 

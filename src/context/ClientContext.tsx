@@ -98,8 +98,9 @@ export const ClientProvider = ({ children }: Iprops) => {
             const data = await response.json()
 
             console.log(data)
-            setLoading(false)
             await fetchTaskOfClient()
+            setLoading(false)
+
         } catch (err) {
             setLoading(false)
             console.log(err)
@@ -143,7 +144,7 @@ export const ClientProvider = ({ children }: Iprops) => {
 
             setPendingTasks(data.AllPendingTask || [])
             setTrackingTasks(data.AllTrackingTask || [])
-
+            setLoading(false)
         } catch (error) {
             console.error("Error fetching tasks:", error)
         } finally {

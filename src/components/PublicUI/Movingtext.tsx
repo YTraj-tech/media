@@ -22,7 +22,7 @@ const paratext: string[] = [
         }}
       >
         {[...paratext, ...paratext,...paratext,...paratext].map((text, inx) => (
-          <h1 key={inx} className='text-2xl  mx-12 '>
+          <h1 key={inx} className='text-2xl text-gray-500  mx-12 '>
             {text.slice(0,40)}
               <br/>
              <span>{text.slice(41,text.length-1)}</span> 
