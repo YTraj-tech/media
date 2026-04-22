@@ -1,15 +1,19 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+  },
 };
 
 const navLinks = ["FAQS", "PRIVATE TOURS", "ABOUT US"];
@@ -62,7 +66,7 @@ export default function Footer() {
                   style={{ letterSpacing: "0.01em" }}
                 >
                   {link}
-                  <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#1a1a1a] transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#1a1a1a] transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
             </nav>
@@ -85,7 +89,7 @@ export default function Footer() {
                   style={{ letterSpacing: "0.01em" }}
                 >
                   {link}
-                  <span className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#1a1a1a] transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-[#1a1a1a] transition-all duration-300 group-hover:w-full" />
                 </a>
               ))}
             </nav>
