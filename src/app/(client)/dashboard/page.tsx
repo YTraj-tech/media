@@ -1,15 +1,17 @@
 
-'use client'
+
 import { HoverBorderGradientDemo } from "@/components/ReuseCompo/Button"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Search } from "lucide-react"
 import { Noto_Sans_Display } from "next/font/google"
-import CardData from "@/components/clientCompo/CardData";
 import { TableOfTask } from "@/components/clientCompo/TabelofTask"
 import { Button } from "@/components/ui/button"
 import FilterData from "@/components/clientCompo/FilterData"
 import ClientCard from "@/components/clientCompo/UserProfile"
-import { Suspense } from "react"
+import React, { Suspense } from "react"
+
+const CardData = React.lazy(() => import("@/components/clientCompo/CardData"));
+
 
 const Vend = Noto_Sans_Display({
   subsets: ['latin'],
@@ -34,7 +36,7 @@ const ClientPage = () => {
             Monitor, manage, and optimize all your campaigns from a single place.
           </p>
         </div>
-        <Suspense fallback={<p>loading...</p>}>        
+        <Suspense fallback={<p>loading...</p>}>
           <CardData />
         </Suspense>
         <div className="ml-9">

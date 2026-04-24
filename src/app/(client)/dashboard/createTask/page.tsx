@@ -1,195 +1,40 @@
-// 'use client'
-
-// import { UseClientContext } from '@/context/ClientContext'
-// import { useState } from 'react'
-// import { Button } from '@/components/ui/button'
-// import { Input } from '@/components/ui/input'
-// import { Label } from '@/components/ui/label'
-// import { Separator } from '@/components/ui/separator'
-// import { Truck, CalendarDays, Users } from 'lucide-react'
-
-// const infoCards = [
-//   {
-//     icon: Truck,
-//     title: 'Vehicle assignment',
-//     desc: 'Specify the vehicle type needed for this task',
-//   },
-//   {
-//     icon: CalendarDays,
-//     title: 'Scheduled start',
-//     desc: 'Tasks can only be scheduled from today onwards',
-//   },
-//   {
-//     icon: Users,
-//     title: 'Worker allocation',
-//     desc: 'Minimum one worker required per task',
-//   },
-// ]
-
-// const CreateTask = () => {
-//   const [formData, setFormData] = useState({
-//     vehicleType: '',
-//     startDate: '',
-//     numberOfWorker: '',
-//   })
-
-//   const { CreateTask } = UseClientContext()
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target
-//     setFormData(prev => ({ ...prev, [name]: value }))
-//   }
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault()
-//     await CreateTask(
-//       formData.vehicleType,
-//       new Date(formData.startDate),
-//       Number(formData.numberOfWorker)
-//     )
-//     handleReset()
-//   }
-
-//   const handleReset = () => {
-//     setFormData({ vehicleType: '', startDate: '', numberOfWorker: '' })
-//   }
-
-//   return (
-//     <div className="grid grid-cols-2 h-screen w-screen">
-
-//       {/* Left panel */}
-//       <div className=" bg-black flex w-1/2 flex-col justify-between p-12">
-//         <div className="space-y-4">
-//           <p className="text-xs font-medium tracking-widest uppercase text-white/40">
-//             Task management
-//           </p>
-//           <h1 className="text-3xl font-medium text-white leading-snug">
-//             Create a new task
-//           </h1>
-//           <p className="text-sm text-white/50 leading-relaxed max-w-xs">
-//             Assign vehicles and workers to kick off a new operation quickly.
-//           </p>
-//         </div>
-
-//         <div className="flex flex-col gap-3">
-//           {infoCards.map(({ icon: Icon, title, desc }) => (
-//             <div
-//               key={title}
-//               className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl p-4"
-//             >
-//               <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center shrink-0">
-//                 <Icon size={16} className="text-white" />
-//               </div>
-//               <div>
-//                 <p className="text-sm font-medium text-white">{title}</p>
-//                 <p className="text-xs text-white/45 mt-0.5">{desc}</p>
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* Right panel */}
-//       <div className="bg-background flex items-center justify-center overflow-y-auto p-12">
-//         <div className="w-full max-w-sm">
-//           <div className="mb-8">
-//             <h2 className="text-xl font-medium mb-1">Task details</h2>
-//             <p className="text-sm text-muted-foreground">
-//               All fields marked <span className="text-destructive">*</span> are required.
-//             </p>
-//           </div>
-
-//           <form onSubmit={handleSubmit} className="space-y-5">
-//             <div className="space-y-2">
-//               <Label htmlFor="vehicleType">
-//                 Vehicle type <span className="text-destructive">*</span>
-//               </Label>
-//               <Input
-//                 id="vehicleType"
-//                 name="vehicleType"
-//                 value={formData.vehicleType}
-//                 onChange={handleChange}
-//                 placeholder="e.g. Truck, Van, Car"
-//                 required
-//               />
-//               <p className="text-xs text-muted-foreground">Enter the type of vehicle to be used</p>
-//             </div>
-
-//             <div className="space-y-2">
-//               <Label htmlFor="startDate">
-//                 Start date <span className="text-destructive">*</span>
-//               </Label>
-//               <Input
-//                 id="startDate"
-//                 name="startDate"
-//                 type="date"
-//                 value={formData.startDate}
-//                 onChange={handleChange}
-//                 min={new Date().toISOString().split('T')[0]}
-//                 required
-//               />
-//               <p className="text-xs text-muted-foreground">Select when the task should begin</p>
-//             </div>
-
-//             <div className="space-y-2">
-//               <Label htmlFor="numberOfWorker">
-//                 Number of workers <span className="text-destructive">*</span>
-//               </Label>
-//               <Input
-//                 id="numberOfWorker"
-//                 name="numberOfWorker"
-//                 type="number"
-//                 value={formData.numberOfWorker}
-//                 onChange={handleChange}
-//                 placeholder="e.g. 4"
-//                 min="1"
-//                 required
-//               />
-//               <p className="text-xs text-muted-foreground">Specify how many workers will be assigned</p>
-//             </div>
-
-//             <Separator />
-
-//             <div className="flex gap-2">
-//               <Button type="submit" className="flex-1">Create task</Button>
-//               <Button type="button" variant="outline" onClick={handleReset}>Reset</Button>
-//             </div>
-//           </form>
-//         </div>
-//       </div>
-
-//     </div>
-//   )
-// }
-
-// export default CreateTask
-
-
 'use client'
 
 import { UseClientContext } from '@/context/ClientContext'
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Separator } from '@/components/ui/separator'
-import { Truck, CalendarDays, Users } from 'lucide-react'
+import { Quicksand } from "next/font/google"
+import {Inconsolata} from "next/font/google"
+import { Truck, CalendarDays, Users, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react'
+
+
+const Vend = Quicksand({
+  subsets:['latin'],
+  weight:['600']
+})
+
+const Inco = Inconsolata({
+   subsets:['latin'],
+   weight:['400']
+})
 
 const infoCards = [
   {
     icon: Truck,
-    title: 'Vehicle assignment',
+    title: 'Vehicle Assignment',
     desc: 'Specify the vehicle type needed for this task',
+    number: '01',
   },
   {
     icon: CalendarDays,
-    title: 'Scheduled start',
+    title: 'Scheduled Start',
     desc: 'Tasks can only be scheduled from today onwards',
+    number: '02',
   },
   {
     icon: Users,
-    title: 'Worker allocation',
+    title: 'Worker Allocation',
     desc: 'Minimum one worker required per task',
+    number: '03',
   },
 ]
 
@@ -199,6 +44,7 @@ const CreateTask = () => {
     startDate: '',
     numberOfWorker: '',
   })
+  const [submitted, setSubmitted] = useState(false)
 
   const { CreateTask } = UseClientContext()
 
@@ -214,64 +60,106 @@ const CreateTask = () => {
       new Date(formData.startDate),
       Number(formData.numberOfWorker)
     )
-    handleReset()
+    setSubmitted(true)
+    setTimeout(() => {
+      setSubmitted(false)
+      handleReset()
+    }, 2000)
   }
 
   const handleReset = () => {
     setFormData({ vehicleType: '', startDate: '', numberOfWorker: '' })
   }
 
-  return (
-    <div className="flex border-l-2 border-gray-300 flex-col md:flex-row min-h-screen w-full overflow-hidden">
+  const filledCount = Object.values(formData).filter(Boolean).length
+  const progressWidth = filledCount === 0 ? 'w-0' : filledCount === 1 ? 'w-1/3' : filledCount === 2 ? 'w-2/3' : 'w-full'
 
-      {/* Right panel */}
-      <div className="bg-background flex items-center justify-center p-8 md:p-12 md:w-1/2 md:min-h-screen overflow-y-auto">
+  return (
+    <div className="flex flex-col border-l-2 border-gray-300 md:flex-row min-h-screen w-full">
+
+      {/* ── LEFT PANEL ── */}
+      <div className="relative bg-white flex items-center justify-center p-10 md:p-16 md:w-1/2 border-r border-gray-100">
+
+        {/* Success Overlay */}
+        {submitted && (
+          <div className="absolute inset-0 bg-white z-10 flex flex-col items-center justify-center gap-3 rounded-none animate-in fade-in zoom-in-95 duration-300">
+            <CheckCircle2 size={40} strokeWidth={1.5} className="text-gray-900" />
+            <p className="text-lg font-bold text-gray-900 tracking-tight">Task Created!</p>
+            <p className="text-sm text-gray-400">Your task has been logged successfully.</p>
+          </div>
+        )}
+
         <div className="w-full max-w-sm">
-          <div className="mb-8">
-            <h2 className="text-xl font-medium mb-1">Task details</h2>
-            <p className="text-sm text-muted-foreground">
-              All fields marked <span className="text-destructive">*</span> are required.
+
+          {/* Header */}
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-5">
+              <div className="w-1.5 h-1.5 rounded-full bg-gray-900" />
+              <span className="text-[11px] font-semibold tracking-widest uppercase text-gray-400">
+                New Task
+              </span>
+            </div>
+            <h2 className={`text-5xl font-extrabold text-gray-900 leading-tight tracking-tight mb-2 ${Vend.className} `}>
+              Task Details
+            </h2>
+            <p className={`text-lg text-gray-700  ${Inco.className} `}>
+              Fill in the details below to create and assign a new operational task.
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="vehicleType">
-                Vehicle type <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="vehicleType"
+          {/* Progress */}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-2">
+              <span className="text-[11px] text-gray-400 font-medium">Completion</span>
+              <span className="text-[11px] text-gray-900 font-semibold">{filledCount}/3 fields</span>
+            </div>
+            <div className="h-0.5 bg-gray-100 rounded-full overflow-hidden">
+              <div className={`h-full bg-gray-900 rounded-full transition-all duration-500 ${progressWidth}`} />
+            </div>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-7">
+
+            {/* Vehicle Type */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-semibold tracking-widest uppercase text-gray-400">
+                Vehicle Type <span className="text-red-500">*</span>
+              </label>
+              <input
                 name="vehicleType"
                 value={formData.vehicleType}
                 onChange={handleChange}
-                placeholder="e.g. Truck, Van, Car"
+                placeholder="e.g. Truck, Van, Pickup"
                 required
+                className="w-full bg-transparent border-0 border-b border-gray-200 focus:border-gray-900 outline-none py-2.5 text-sm text-gray-900 placeholder:text-gray-300 transition-colors duration-200"
               />
-              <p className="text-xs text-muted-foreground">Enter the type of vehicle to be used</p>
+              <p className="text-xs text-gray-400">The type of vehicle required for this task</p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="startDate">
-                Start date <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="startDate"
+            {/* Start Date */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-semibold tracking-widest uppercase text-gray-400">
+                Start Date <span className="text-red-500">*</span>
+              </label>
+              <input
                 name="startDate"
                 type="date"
                 value={formData.startDate}
                 onChange={handleChange}
                 min={new Date().toISOString().split('T')[0]}
                 required
+                className="w-full bg-transparent border-0 border-b border-gray-200 focus:border-gray-900 outline-none py-2.5 text-sm text-gray-900 transition-colors duration-200"
               />
-              <p className="text-xs text-muted-foreground">Select when the task should begin</p>
+              <p className="text-xs text-gray-400">Scheduled date for task to begin</p>
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="numberOfWorker">
-                Number of workers <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="numberOfWorker"
+            {/* Workers */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-semibold tracking-widest uppercase text-gray-400">
+                Workers Needed <span className="text-red-500">*</span>
+              </label>
+              <input
                 name="numberOfWorker"
                 type="number"
                 value={formData.numberOfWorker}
@@ -279,53 +167,99 @@ const CreateTask = () => {
                 placeholder="e.g. 4"
                 min="1"
                 required
+                className="w-full bg-transparent border-0 border-b border-gray-200 focus:border-gray-900 outline-none py-2.5 text-sm text-gray-900 placeholder:text-gray-300 transition-colors duration-200"
               />
-              <p className="text-xs text-muted-foreground">Specify how many workers will be assigned</p>
+              <p className="text-xs text-gray-400">Number of workers to be allocated</p>
             </div>
 
-            <Separator />
+            <div className="h-px bg-gray-100" />
 
-            <div className="flex gap-2">
-              <Button type="submit" className="flex-1">Create task</Button>
-              <Button type="button" variant="outline" onClick={handleReset}>Reset</Button>
+            {/* Buttons */}
+            <div className="flex gap-3">
+              <button
+                type="submit"
+                className="flex-1 flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium py-3.5 px-6 rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gray-900/20 active:translate-y-0"
+              >
+                Create Task
+                <ArrowRight size={15} />
+              </button>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="px-5 py-3.5 text-sm text-gray-400 border border-gray-200 rounded-xl hover:border-gray-300 hover:text-gray-600 transition-all duration-200"
+              >
+                Reset
+              </button>
             </div>
+
           </form>
         </div>
       </div>
 
+      {/* ── RIGHT PANEL ── */}
+      <div className="relative flex flex-col justify-between p-10 md:p-16 md:w-1/2 md:min-h-screen bg-[#0c1117] overflow-hidden">
 
-        {/* Left panel */}
-      <div className="bg-[#F5F6F7] flex flex-col justify-between p-8 md:p-12 md:w-1/2 md:min-h-screen">
-        <div className="space-y-4">
-          <p className="text-xs font-medium tracking-widest uppercase ">
-            Task management
-          </p>
-          <h1 className="text-2xl md:text-3xl font-medium leading-snug">
-            Create a new task
+        {/* Dot grid */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-60"
+          style={{ backgroundImage: 'radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '28px 28px' }}
+        />
+
+        {/* Glow blobs */}
+        <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 -left-16 w-64 h-64 rounded-full bg-emerald-500/8 blur-3xl pointer-events-none" />
+
+        {/* Top section */}
+        <div className="relative space-y-5">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full">
+            <Sparkles size={10} className="text-white/40" />
+            <span className="text-[11px] font-medium tracking-widest uppercase text-white/40">
+              Task Management
+            </span>
+          </div>
+
+          <h1 className={`text-4xl md:text-5xl font-extrabold text-white leading-[1.1] tracking-tight ${Vend.className} `}>
+            Coordinate.<br />
+            <span className="text-white/30">Deploy.</span><br />
+            Execute.
           </h1>
-          <p className="text-sm leading-relaxed max-w-xs">
-            Assign vehicles and workers to kick off a new operation quickly.
+
+          <p className={`text-lg text-white  w-sm ${Inco.className} `}>
+            Streamline operations by assigning vehicles and workers to new tasks — tracked and logged in real time.
           </p>
         </div>
 
-        <div className="flex flex-col gap-3 mt-10 md:mt-0">
-          {infoCards.map(({ icon: Icon, title, desc }) => (
+        {/* Info cards */}
+        <div className="relative flex flex-col gap-3 my-10 md:my-0">
+          {infoCards.map(({ icon: Icon, title, desc, number }) => (
             <div
               key={title}
-              className="flex items-start gap-3  border border-white/10 rounded-xl p-4"
+              className="flex items-start gap-4 border border-white/[0.07] rounded-2xl p-4 bg-white/3 hover:bg-white/6 hover:border-white/12 transition-all duration-200"
             >
-              <div className="w-8 h-8 rounded-lg  flex items-center justify-center shrink-0">
-                <Icon size={16}  />
+              <span className="text-[11px] font-bold text-white/20 tracking-wide pt-0.5 min-w-5">
+                {number}
+              </span>
+              <div className="w-9 h-9 rounded-xl bg-white/[0.07] border border-white/10 flex items-center justify-center shrink-0">
+                <Icon size={15} className="text-white/60" />
               </div>
               <div>
-                <p className="text-sm font-medium ">{title}</p>
-                <p className="text-xs  mt-0.5">{desc}</p>
+                <p className="text-sm text-white/80 font-semibold mb-0.5">{title}</p>
+                <p className="text-xs text-white/35 leading-relaxed">{desc}</p>
               </div>
             </div>
           ))}
         </div>
-      </div>
 
+        {/* Bottom */}
+        <div className="relative flex items-center justify-between">
+          <p className="text-[11px] text-white/20 tracking-wide">© 2025 Operations Platform</p>
+          <div className="flex items-center gap-1.5 px-2.5 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-full">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-[11px] text-emerald-400/80 font-medium">System live</span>
+          </div>
+        </div>
+
+      </div>
     </div>
   )
 }

@@ -33,7 +33,7 @@ const TrackPage = () => {
             const data = await res.json()
 
             if (!res.ok) {
-                setError(data.error || 'Something went wrong')
+                setError('Something went wrong')
                 setActiveTask(false)
                 return
             }

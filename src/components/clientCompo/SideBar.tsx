@@ -52,7 +52,7 @@ const SideBar = () => {
   const isActive = (href: string) => pathName === href
 
   return (
-    <nav className="h-screen flex flex-col   mx-12 gap-y-16  ">
+    <nav className="h-screen flex flex-col mx-12 gap-y-16  ">
 
       {/* Logo */}
         <img src="/logo.webp" alt="logo" className="h-40 w-40" />
