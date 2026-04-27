@@ -44,6 +44,11 @@ const navLinks: INav[] = [
     label: 'Live Tracking',
     icon: <Activity size={20} />,
   },
+  {
+    href: '/dashboard/Track/Tasks',
+    label: 'Pending Tasks',
+    icon: <Activity size={20} />,
+  },
 ]
 
 const SideBar = () => {
