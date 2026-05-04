@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { UseClientContext } from '@/context/ClientContext';
+import { useWorker } from '@/context/workerContext';
 
 interface Task {
   _id: string;
@@ -24,13 +25,13 @@ const SingelTask = () => {
 
 
   const { StoptheTask, fetchTaskOfClient } = UseClientContext()
+  const { fetchWorkerProfile } = useWorker()
 
-  const handelStopTask = () => {
+  const handelStopTask = async () => {
     if (taskid && typeof taskid === 'string') {
       StoptheTask(taskid)
-
+      await fetchWorkerProfile()
     }
-
   }
 
   const fetchSingelTask = async () => {

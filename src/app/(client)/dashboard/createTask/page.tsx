@@ -3,18 +3,18 @@
 import { UseClientContext } from '@/context/ClientContext'
 import { useState } from 'react'
 import { Quicksand } from "next/font/google"
-import {Inconsolata} from "next/font/google"
+import { Inconsolata } from "next/font/google"
 import { Truck, CalendarDays, Users, ArrowRight, CheckCircle2, Sparkles } from 'lucide-react'
 
 
 const Vend = Quicksand({
-  subsets:['latin'],
-  weight:['600']
+  subsets: ['latin'],
+  weight: ['600']
 })
 
 const Inco = Inconsolata({
-   subsets:['latin'],
-   weight:['400']
+  subsets: ['latin'],
+  weight: ['400']
 })
 
 const infoCards = [
@@ -44,27 +44,23 @@ const CreateTask = () => {
     startDate: '',
     numberOfWorker: '',
   })
-  const [submitted, setSubmitted] = useState(false)
 
-  const { CreateTask } = UseClientContext()
+  const { CreateTask, loading } = UseClientContext()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await CreateTask(
       formData.vehicleType,
       new Date(formData.startDate),
       Number(formData.numberOfWorker)
     )
-    setSubmitted(true)
-    setTimeout(() => {
-      setSubmitted(false)
-      handleReset()
-    }, 2000)
+    handleReset()
+
   }
 
   const handleReset = () => {
@@ -80,14 +76,7 @@ const CreateTask = () => {
       {/* ── LEFT PANEL ── */}
       <div className="relative bg-white flex items-center justify-center p-10 md:p-16 md:w-1/2 border-r border-gray-100">
 
-        {/* Success Overlay */}
-        {submitted && (
-          <div className="absolute inset-0 bg-white z-10 flex flex-col items-center justify-center gap-3 rounded-none animate-in fade-in zoom-in-95 duration-300">
-            <CheckCircle2 size={40} strokeWidth={1.5} className="text-gray-900" />
-            <p className="text-lg font-bold text-gray-900 tracking-tight">Task Created!</p>
-            <p className="text-sm text-gray-400">Your task has been logged successfully.</p>
-          </div>
-        )}
+
 
         <div className="w-full max-w-sm">
 
@@ -178,9 +167,10 @@ const CreateTask = () => {
             <div className="flex gap-3">
               <button
                 type="submit"
+                disabled={loading}
                 className="flex-1 flex items-center justify-center gap-2 bg-gray-900 hover:bg-gray-800 text-white text-sm font-medium py-3.5 px-6 rounded-xl transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-gray-900/20 active:translate-y-0"
               >
-                Create Task
+                {loading ? "Creating..." : "Create Task"}
                 <ArrowRight size={15} />
               </button>
               <button

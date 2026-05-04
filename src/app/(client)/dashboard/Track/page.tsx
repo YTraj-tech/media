@@ -1,8 +1,9 @@
 "use client"
 
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import dynamic from 'next/dynamic'
+import Loading from '@/components/clientCompo/loading'
 
 interface IWorkerData {
     workerId: string
@@ -16,12 +17,16 @@ interface IWorkerData {
 // Dynamically import map to avoid SSR issues with Leaflet
 const MapComponent = dynamic(() => import('@/components/WorkerCompo/MapComponent'), {
     ssr: false,
-    loading: () => <p>Loading map...</p>,
+    loading: () => <Loading/>,
 })
 
 const TrackPage = () => {
+
+    const buttonInterval = useRef<NodeJS.Timeout | null>(null)
+
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const [stop, setStop] = useState(false)
     const [activeTask, setActiveTask] = useState<boolean | null>(null)
     const [workers, setWorkers] = useState<IWorkerData[]>([])
 
@@ -35,13 +40,25 @@ const TrackPage = () => {
             if (!res.ok) {
                 setError('Something went wrong')
                 setActiveTask(false)
+                setStop(data.stop)
+
+                if (data.stop && buttonInterval.current) {
+                    clearInterval(buttonInterval.current)
+                }
+
                 return
             }
 
             setWorkers(data.data)
             setActiveTask(true)
+            setStop(data.stop)
+
+            if (data.stop && buttonInterval.current) {
+                console.log("🛑 Stop received → clearing interval")
+                clearInterval(buttonInterval.current)
+            }
         } catch {
-            setError('Network error. Please try again.')
+            setError('Nuetwork error. Please try again.')
             setActiveTask(false)
         } finally {
             setLoading(false)
@@ -50,29 +67,39 @@ const TrackPage = () => {
 
     useEffect(() => {
         fetchLocation()
-        const interval = setInterval(fetchLocation, 10000)
-        return () => clearInterval(interval)
+        buttonInterval.current = setInterval(() => {
+            fetchLocation()
+        }, 10000)
+        return () => {
+            if (buttonInterval.current) {
+                clearInterval(buttonInterval.current)
+            }
+        }
     }, [])
+
+    if (stop) {
+        if (buttonInterval.current) {
+            clearInterval(buttonInterval.current)
+        }
+    }
+
+
 
     const validWorkers = workers.filter(
         (w) => w.location.lat !== null && w.location.lng !== null
     )
 
     return (
-        <div style={{ fontFamily: 'sans-serif', padding: '16px' }}>
-            <h1>Live Tracking</h1>
+        <div style={{ fontFamily: 'sans-serif', padding: '16px' }} className='border-l-2 h-full text-center border-gray-300'>
+            <h1 className='text-2xl'>Live Tracking</h1>
 
-            {loading && <p>Loading...</p>}
+            {loading && <Loading/>}
 
             {!loading && error && (
-                <p style={{ color: 'red' }}>{error}</p>
+                <p className='text-red-400 text-xl'>Make the Task Live To Fetch The location</p>
             )}
 
-            {!loading && activeTask === false && (
-                <Link href="/dashboard/Track/Tasks">
-                    Make your task live to start tracking
-                </Link>
-            )}
+            
 
             {/* Leaflet Map — loaded dynamically (no SSR) */}
             {!error && validWorkers.length > 0 && (
@@ -97,3 +124,71 @@ const TrackPage = () => {
 }
 
 export default TrackPage
+
+
+// 'use client'
+
+// import React from 'react'
+// import { useState, useEffect , useRef } from 'react'
+
+// interface IWorkerData {
+//   workerId: string,
+//   location: {
+//     lat: number,
+//     lng: number
+//   },
+//   status: string
+// }
+
+// const TrackPage = () => {
+
+//   const [loading, setLoading] = useState(false)
+//   const [error, setError] = useState('')
+//   const [Sendlocation, setSendlocation] = useState(false)
+//   const [workerData, setWorkerData] = useState<IWorkerData | null>(null)
+
+//   const Stoplocation = useRef<NodeJS.Timeout | null>(null)
+
+//   async function fetchLocation() {
+//     setLoading(true)
+//     try {
+//       setLoading(true)
+//       const response = await fetch('/api/TaskLocation', {
+//         method: 'GET',
+//         headers: {
+//           'content-type': 'application/json'
+//         }
+//       })
+
+//       const data = await response.json()
+//       console.log(data)
+//       setWorkerData(data)
+//       setSendlocation(data.success)
+//     } catch (error: any) {
+//       console.log(error)
+//       setError(error)
+//     }
+//   }
+
+//   useEffect(() => {
+//     fetchLocation()
+//     if (Sendlocation) {
+//         Stoplocation.current = setInterval(() => {
+//         fetchLocation()
+//       }, 10000)
+//     }
+//     return () => {
+//       if (Stoplocation.current) {
+//         clearInterval(Stoplocation.current)
+//       }
+//     }
+//   }, [])
+
+//   return (
+//     <div>
+//       <h1>Live Trackign</h1>
+//     </div>
+//   )
+// }
+
+// export default TrackPage

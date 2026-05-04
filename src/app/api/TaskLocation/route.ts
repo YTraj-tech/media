@@ -60,7 +60,7 @@ export const GET = async (req: NextRequest) => {
             status: worker.status,
         }));
 
-        return NextResponse.json({ data: result, success: true }, { status: 200 });
+        return NextResponse.json({result, success: true }, { status: 200 });
 
     } catch (error) {
         console.error("TaskLocation error:", error);

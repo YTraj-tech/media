@@ -1,117 +1,104 @@
-
-
-
-import { auth, clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { NextRequest } from "next/server";
-import { User } from "../models/user.model";
-import { connectDB } from "./lib/dbconnect";
 
-// ✅ Route matchers
+// 🌐 Public routes
 const isPublicRoute = createRouteMatcher([
-   '/',
+  "^/$",
   "/sign-in(.*)",
   "/sign-up(.*)",
 ]);
 
-const isClientRoute = createRouteMatcher([
-  "/dashboard(.*)",
-   "/"
-]);
-
-const isWorkerRoute = createRouteMatcher([
-  "/worker(.*)",
-   "/"
-]);
-
-const isadminRoutes = createRouteMatcher([
-  '/Admin(.*)',
-
-])
-
+// 🔌 API routes
 const isApiRoute = createRouteMatcher([
   "/api(.*)",
 ]);
 
+// 🔐 Role routes
+const isAdminRoute = createRouteMatcher(["/Admin(.*)"]);
+const isWorkerRoute = createRouteMatcher(["/worker(.*)"]);
+const isClientRoute = createRouteMatcher(["/dashboard(.*)"]);
 
-const clerkHandlerLogic = async ( auth:any,req: NextRequest) => {
+// 🎯 Role → home
+const roleHomeMap: Record<string, string> = {
+  Admin: "/Admin",
+  worker: "/worker",
+  client: "/dashboard",
+};
+
+export default clerkMiddleware(async (auth, req) => {
   try {
-    const path = req.nextUrl.pathname;
-    console.log("🌐 PATH:", path);
-
-    // ✅ Skip API routes
-    if (isApiRoute(req)) return;
-
     const { userId } = await auth();
 
-    // =========================
-    // 🔓 NOT LOGGED IN
-    // =========================
-    if (!userId) {
-      // allow only public routes
-      if (isPublicRoute(req)) return;
+    // ✅ Allow API
+    if (isApiRoute(req)) {
+      return NextResponse.next();
+    }
 
+    // 🔓 NOT LOGGED IN
+    if (!userId) {
+      if (isPublicRoute(req)) return NextResponse.next();
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
 
-    // =========================
-    // 🔒 LOGGED IN USER
-    // =========================
+    // 🔥 Fetch role
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      `${req.nextUrl.protocol}//${req.nextUrl.host}`;
 
-    // ❌ Block ALL public routes after login
+    const res = await fetch(`${baseUrl}/api/UserRole`, {
+      headers: {
+        cookie: req.headers.get("cookie") || "",
+      },
+      next: { revalidate: 60 },
+    });
+
+    if (!res.ok) {
+      return NextResponse.redirect(new URL("/sign-in", req.url));
+    }
+
+    const { role } = await res.json();
+    const userHome = roleHomeMap[role] || "/dashboard";
+
+    // 🚫 Block public routes after login
     if (isPublicRoute(req)) {
-      console.log("⛔ Logged-in user accessing public route");
+      return NextResponse.redirect(new URL(userHome, req.url));
     }
 
-    // ✅ Connect DB
-    await connectDB();
+    // 🔐 STRICT ROLE CHECK (no map, just conditions)
 
-    const dbUser = await User.findOne({ clerkId: userId });
-
-    if (!dbUser) {
-      return NextResponse.redirect(new URL("/sign-up", req.url));
+    // 👑 Admin
+    if (role === "Admin") {
+      if (!isAdminRoute(req)) {
+        return NextResponse.redirect(new URL("/admin", req.url));
+      }
     }
 
-
-
-    if (dbUser.role === "worker") {
-      // 🚫 ONLY allow /worker
+    // 👷 Worker
+    else if (role === "worker") {
       if (!isWorkerRoute(req)) {
-        console.log("⛔ Worker blocked from:", path);
         return NextResponse.redirect(new URL("/worker", req.url));
       }
-    } 
-    else if (dbUser.role === "client") {
-      // 🚫 ONLY allow /dashboard
-      if (!isClientRoute(req)) {
-        console.log("⛔ Client blocked from:", path);
-        return NextResponse.redirect(new URL("/dashboard", req.url));
-      }
-    } else if(dbUser.role==="Admin"){
-        if (!isadminRoutes(req)) {
-          console.log("Admin blocked from",path);
-          return NextResponse.redirect(new URL('/Admin',req.url))
-        }
-    }
-    else {
-      return NextResponse.redirect(new URL("/", req.url));
     }
 
-    console.log("✅ Access allowed");
+    // 👤 Client
+    else if (role === "client") {
+      if (!isClientRoute(req)) {
+        return NextResponse.redirect(new URL("/dashboard", req.url));
+      }
+    }
+
+    // ✅ Allowed
+    return NextResponse.next();
 
   } catch (error) {
     console.error("❌ Middleware error:", error);
     return NextResponse.redirect(new URL("/sign-in", req.url));
   }
-};
-
-export default clerkMiddleware(clerkHandlerLogic);
+});
 
 export const config = {
   matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|png|jpg|jpeg|gif|svg|woff2?|ico)).*)',
     '/api/(.*)',
   ],
 };
-
-

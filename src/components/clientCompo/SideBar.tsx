@@ -11,6 +11,7 @@ import {
   Activity,
   LogOut,
 } from 'lucide-react'
+import Image from 'next/image'
 
 interface INav {
   href: string
@@ -57,11 +58,10 @@ const SideBar = () => {
   const isActive = (href: string) => pathName === href
 
   return (
-    <nav className="h-screen flex flex-col mx-12 gap-y-16  ">
+    <nav className="h-full flex flex-col mx-12 gap-y-16  ">
 
       {/* Logo */}
-        <img src="/logo.webp" alt="logo" className="h-40 w-40" />
-
+         <Image src={'/next.svg'} alt='logo' width={100} height={100} className='h-40 w-40' />
       {/* Nav links */}
 
       <div className="flex flex-col">

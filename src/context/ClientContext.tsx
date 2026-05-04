@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState, ReactNode } from "react"
+import { tryLoadManifestWithRetries } from "next/dist/server/load-components";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react"
 
 
 interface Task {
@@ -22,7 +23,8 @@ interface Iclient {
     TaskLive: (taskid: string) => Promise<void>
     fetchTaskOfClient: () => Promise<void>,
     PendingTask: Task[],
-    TrackingTasks: Task[]
+    TrackingTasks: Task[],
+    UserRole: string | null
 }
 
 const CreateClientContext = createContext<Iclient | null>(null)
@@ -39,6 +41,7 @@ export const ClientProvider = ({ children }: Iprops) => {
     const [Workers, setWorkers] = useState<String[]>([])
     const [PendingTask, setPendingTasks] = useState<Task[]>([])
     const [TrackingTasks, setTrackingTasks] = useState<Task[]>([])
+    const [UserRole, setUserRole] = useState<null | string>(null)
 
     const CreateProfile = async (companyName: string, companyType: string, purpose: string, name: string, Employes: string) => {
         setLoading(true)
@@ -53,10 +56,10 @@ export const ClientProvider = ({ children }: Iprops) => {
 
             const data = await response.json()
             console.log(data)
-            setLoading(false)
         } catch (error) {
-            setLoading(false)
             console.log("failed to create the profile")
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -154,8 +157,11 @@ export const ClientProvider = ({ children }: Iprops) => {
 
 
 
+
+
+
     return (
-        <CreateClientContext.Provider value={{ CreateProfile, CreateTask, StoptheTask, TaskLive, fetchTaskOfClient, PendingTask, TrackingTasks, loading }}>
+        <CreateClientContext.Provider value={{ CreateProfile, CreateTask, StoptheTask, TaskLive, fetchTaskOfClient, PendingTask, TrackingTasks, loading, UserRole }}>
             {children}
         </CreateClientContext.Provider>
     )

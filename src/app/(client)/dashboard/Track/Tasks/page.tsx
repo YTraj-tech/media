@@ -36,7 +36,7 @@ const Taskspage = () => {
     await fetchTaskOfClient()
   }
 
-  useEffect(() => {
+   useEffect(() => {
     fetchTaskOfClient()
   }, [])
 

@@ -1,17 +1,19 @@
 
 import React from 'react'
 import SideBar from '@/components/clientCompo/SideBar'
-import { ClientProvider } from '@/context/ClientContext'
-import { AdminProvider } from '@/context/AdminContext'
+import { ClientProvider, UseClientContext } from '@/context/ClientContext'
 
-export default async  function ClientLayout  ({ children }: { children: React.ReactNode })  {
+
+export default function ClientLayout({ children }: { children: React.ReactNode }) {
+
+
+
   return (
     <div className="flex h-full ">
 
       <SideBar />
 
-      {/* Page content — changes per route */}
-      <main className="flex-1 justify-center items-center w-full overflow-hidden h-screen ">
+      <main className="flex-1 justify-center w-screen items-center overflow-hidden h-screen ">
         <ClientProvider>
 
           {children}

@@ -14,6 +14,7 @@ const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 
 export default async function layout({ children }: { children: React.ReactNode }) {
+   
   return (
     <html lang="en" className={cn("font-sans", geist.variable)}>
       <body className='bg-[#FFFFFF] pl-5'>

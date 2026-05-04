@@ -3,18 +3,18 @@
 import { UseClientContext } from '@/context/ClientContext'
 import { useState } from 'react'
 import { Quicksand } from "next/font/google"
-import {Inconsolata} from "next/font/google"
+import { Inconsolata } from "next/font/google"
 import { Info } from 'lucide-react'
 
 
 const Archi = Quicksand({
-  subsets:['latin'],
-  weight:['500']
+  subsets: ['latin'],
+  weight: ['500']
 })
 
 const Inco = Inconsolata({
-  subsets:['latin'],
-  weight:['300']
+  subsets: ['latin'],
+  weight: ['300']
 })
 
 
@@ -40,6 +40,7 @@ const ProfilePage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('loading...', loading)
     await CreateProfile(
       formData.companyName,
       formData.companyType,
@@ -47,8 +48,9 @@ const ProfilePage = () => {
       formData.name,
       formData.employees
     )
+    console.log('loading...', loading)
+
     handleReset()
-    alert('Updated successfully')
   }
 
   const handleReset = () => {
@@ -67,7 +69,7 @@ const ProfilePage = () => {
     'w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-800 placeholder-gray-300 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition'
 
   return (
-    <div className="font-sans border-l-2 px-3 border-gray-300  min-h-screen">
+    <div className="font-sans border-l-2 px-3 py-6 border-gray-300 ">
 
       <div className="flex" style={{ height: 'calc(100vh - 53px)' }}>
 
@@ -77,7 +79,7 @@ const ProfilePage = () => {
         <div className="flex-1 overflow-y-auto">
 
           {/* Banner */}
-          <div className="h-24  bg-gradient-to-r from-gray-500 via-gray-400 to-gray-700 rounded-3xl" />
+          <div className="h-24  bg-linear-to-r from-gray-500 via-gray-400 to-gray-700 rounded-3xl" />
 
           {/* Content */}
           <div className="px-7 pb-8 -mt-10">
@@ -93,7 +95,7 @@ const ProfilePage = () => {
                   <p className={`text-lg  ${Inco.className}`}>Alexarawles@gmail.com</p>
                 </div>
               </div>
-            
+
             </div>
 
             {/* Card */}
@@ -198,11 +200,11 @@ const ProfilePage = () => {
                   <hr className="border-gray-100" />
 
                   {/* Actions */}
-                  <div className="flex gap-2 pt-1">
+                  <div className="flex justify-end gap-2 pt-1">
                     <button
                       type="submit"
                       disabled={loading}
-                      className="disabled:opacity-60 bg-gradient-to-r from-gray-500 via-gray-400 to-gray-700  disabled:cursor-not-allowed text-white text-sm font-medium p-5 rounded-lg transition cursor-pointer"
+                      className=" bg-linear-to-r from-gray-500 via-gray-400 to-gray-700  disabled:cursor-not-allowed text-white text-sm font-medium p-2 rounded-lg transition cursor-pointer"
                     >
                       {loading ? 'Saving...' : 'Save profile'}
                     </button>
