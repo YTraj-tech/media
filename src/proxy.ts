@@ -56,8 +56,9 @@ export default clerkMiddleware(async (auth, req) => {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
 
-    const { role } = await res.json();
-    const userHome = roleHomeMap[role] || "/dashboard";
+    const  data = await res.json();
+    const role = data?.role
+    const userHome = roleHomeMap[role] || "/";
 
     // 🚫 Block public routes after login
     if (isPublicRoute(req)) {
