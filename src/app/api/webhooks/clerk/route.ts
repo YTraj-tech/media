@@ -7,11 +7,11 @@ import { WebhookEvent } from "@clerk/nextjs/server";
 
 export async function POST(req: Request) {
     const payload = await req.text();
-    const headerPayload = headers();
+    const headerPayload = await headers();
 
-    const svix_id = (await headerPayload).get("svix-id");
-    const svix_timestamp = (await headerPayload).get("svix-timestamp");
-    const svix_signature = (await headerPayload).get("svix-signature");
+    const svix_id = headerPayload.get("svix-id");
+    const svix_timestamp = headerPayload.get("svix-timestamp");
+    const svix_signature = headerPayload.get("svix-signature");
 
     if (!svix_id || !svix_timestamp || !svix_signature) {
         return new NextResponse("Missing svix headers", { status: 400 });
@@ -28,12 +28,12 @@ export async function POST(req: Request) {
             "svix-signature": svix_signature,
         }) as WebhookEvent;
     } catch (err) {
+        console.error("Webhook verification failed:", err);
         return new NextResponse("Error verifying webhook", { status: 400 });
     }
 
     console.log("EVENT TYPE:", event.type);
 
-    // ✅ Ignore other events
     if (event.type !== "user.created") {
         return NextResponse.json({ received: true });
     }
@@ -46,21 +46,26 @@ export async function POST(req: Request) {
         return new NextResponse("Email missing", { status: 400 });
     }
 
-    await connectDB();
+    try {
+        await connectDB();
 
-    // ✅ Upsert (avoid duplicate errors)
-    await User.findOneAndUpdate(
-        { clerkId: id },
-        {
-            clerkId: id,
-            email,
-            name: first_name,
-            role: "client",
-        },
-        { upsert: true, new: true }
-    );
+        await User.findOneAndUpdate(
+            { clerkId: id },
+            {
+                clerkId: id,
+                email,
+                name: first_name,
+                role: "client",
+            },
+            { upsert: true, new: true }
+        );
 
-    console.log("User stored/updated in DB");
+        console.log("User stored/updated in DB");
 
-    return NextResponse.json({ success: true });
+        return NextResponse.json({ success: true });
+
+    } catch (err) {
+        console.error("Database error:", err);
+        return new NextResponse("Database error", { status: 500 });
+    }
 }
