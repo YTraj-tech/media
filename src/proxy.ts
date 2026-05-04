@@ -45,7 +45,7 @@ export default clerkMiddleware(async (auth, req) => {
       process.env.NEXT_PUBLIC_APP_URL ||
       `${req.nextUrl.protocol}//${req.nextUrl.host}`;
 
-    const res = await fetch(`${baseUrl}/api/UserRole`, {
+    const res = await fetch(`https://mediabrige.vercel.app/api/UserRole`, {
       headers: {
         cookie: req.headers.get("cookie") || "",
       },
