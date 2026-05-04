@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import FilterData from "@/components/clientCompo/FilterData"
 import ClientCard from "@/components/clientCompo/UserProfile"
 import React, { Suspense } from "react"
+import { UserButton } from "@clerk/nextjs"
 
 const CardData = React.lazy(() => import("@/components/clientCompo/CardData"));
 
@@ -35,6 +36,7 @@ const ClientPage = () => {
           <p className="text-sm ml-3 text-gray-400 mb-5">
             Monitor, manage, and optimize all your campaigns from a single place.
           </p>
+             <UserButton/>
         </div>
         <Suspense fallback={<p>loading...</p>}>
           <CardData />
