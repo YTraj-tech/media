@@ -52,8 +52,7 @@ import { UseClientContext } from '@/context/ClientContext'
 
 const NavBar = () => {
 
-  const { UserRole } = UseClientContext()
-
+  const role = localStorage.getItem('role')  
   return (
     <nav className='flex flex-row w-full justify-evenly items-center gap-x-20 fixed z-50'>
 
@@ -78,20 +77,20 @@ const NavBar = () => {
         </Link>
 
         {/* 👇 ROLE BASED LINK */}
-        {UserRole === "client" && (
+        {role === "client" && (
           <Link href="/dashboard" className='text-green-600 text-2xl'>
             Client Dashboard
           </Link>
         )}
 
-        {UserRole === "worker" && (
+        {role === "worker" && (
           <Link href="/worker" className='text-orange-600 text-2xl'>
             Worker Panel
           </Link>
         )}
 
-        {UserRole === "Admin" && (
-          <Link href="/admin" className='text-red-600 text-2xl'>
+        {role === "Admin" && (
+          <Link href="/Admin" className='text-red-600 text-2xl'>
             Admin Panel
           </Link>
         )}
@@ -103,7 +102,7 @@ const NavBar = () => {
 
         <UserButton />
 
-        {!UserRole && (
+        {!role && (
           <button className='bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'>
             Sign In
           </button>
