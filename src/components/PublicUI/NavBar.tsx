@@ -53,7 +53,7 @@ import { UseClientContext } from '@/context/ClientContext'
 
 const NavBar = () => {
 
-  const [UserRole,setUserRole] = useState<null|string>(null)
+  const [UserRole,setUserRole] = useState<null|string>('client')
 
   useEffect(() => {
     const role = localStorage.getItem('role')

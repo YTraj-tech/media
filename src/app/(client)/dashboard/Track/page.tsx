@@ -58,7 +58,7 @@ const TrackPage = () => {
                 clearInterval(buttonInterval.current)
             }
         } catch {
-            setError('Nuetwork error. Please try again.')
+            setError('Network error. Please try again.')
             setActiveTask(false)
         } finally {
             setLoading(false)
@@ -83,17 +83,13 @@ const TrackPage = () => {
         }
     }
 
-
-
-
-
     return (
         <div style={{ fontFamily: 'sans-serif', padding: '16px' }} className='border-l-2 h-full text-center border-gray-300'>
             <h1 className='text-2xl'>Live Tracking</h1>
 
 
             {!loading && error && (
-                <p className='text-red-400 text-xl'>Make the Task Live To Fetch The location</p>
+                <p className='text-red-400 text-xl'>{error || "Make the task Live"}</p>
             )}
 
 
