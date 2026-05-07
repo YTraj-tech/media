@@ -58,7 +58,7 @@ const NavBar = () => {
   useEffect(() => {
     const role = localStorage.getItem('role')
      setUserRole(role)
-  }, [])
+  }, [UserRole])
   return (
     <nav className='flex flex-row w-full justify-evenly items-center gap-x-20 fixed z-50'>
 
