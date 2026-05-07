@@ -73,4 +73,11 @@ export default clerkMiddleware(async (auth, req) => {
   return NextResponse.next()
 })
 
+export const config = {
+  matcher: [
+    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|png|jpg|jpeg|gif|svg|woff2?|ico)).*)',
+    '/api/(.*)',
+  ],
+};
+
 
