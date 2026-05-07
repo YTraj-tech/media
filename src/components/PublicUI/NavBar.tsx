@@ -1,4 +1,4 @@
- 
+
 //  'use client'
 
 // import React from 'react'
@@ -16,7 +16,7 @@
 //       <div className='text-6xl font-bold '>
 //         Logo
 //       </div>
-      
+
 //       <div className='flex flex-row space-x-6'>
 //         <Link href="#home" className='text-gray-700 text-2xl hover:text-blue-600 transition-colors duration-200'>
 //           Home
@@ -32,7 +32,7 @@
 //         </Link>
 //          <UserButton/>
 //       </div>
-      
+
 //       <button className='bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200'>
 //         Sign In
 //       </button>
@@ -45,14 +45,20 @@
 
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import { UserButton } from '@clerk/nextjs'
+import { useState } from 'react'
 import { UseClientContext } from '@/context/ClientContext'
 
 const NavBar = () => {
 
-  const role = localStorage.getItem('role')  
+  const [UserRole,setUserRole] = useState<null|string>(null)
+
+  useEffect(() => {
+    const role = localStorage.getItem('role')
+     setUserRole(role)
+  }, [])
   return (
     <nav className='flex flex-row w-full justify-evenly items-center gap-x-20 fixed z-50'>
 
@@ -77,19 +83,19 @@ const NavBar = () => {
         </Link>
 
         {/* 👇 ROLE BASED LINK */}
-        {role === "client" && (
+        {UserRole === "client" && (
           <Link href="/dashboard" className='text-green-600 text-2xl'>
             Client Dashboard
           </Link>
         )}
 
-        {role === "worker" && (
+        {UserRole === "worker" && (
           <Link href="/worker" className='text-orange-600 text-2xl'>
             Worker Panel
           </Link>
         )}
 
-        {role === "Admin" && (
+        {UserRole === "Admin" && (
           <Link href="/Admin" className='text-red-600 text-2xl'>
             Admin Panel
           </Link>
@@ -102,7 +108,7 @@ const NavBar = () => {
 
         <UserButton />
 
-        {!role && (
+        {!UserRole && (
           <button className='bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700'>
             Sign In
           </button>
