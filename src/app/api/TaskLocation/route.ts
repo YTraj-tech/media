@@ -19,10 +19,6 @@ export const GET = async (req: NextRequest) => {
     try {
         await connectDB();
 
-        // ✅ Referencing Worker after connectDB ensures Mongoose registers the schema
-        // before Task.populate() tries to look it up by the ref name "Worker"
-        // void Worker;
-
         const clientdoc = await client.findOne({ clientId: userId });
 
         if (!clientdoc) {

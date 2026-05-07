@@ -1,7 +1,8 @@
 'use client'
 
-import { tryLoadManifestWithRetries } from "next/dist/server/load-components";
+import { Alert } from "@/components/ui/alert";
 import { createContext, useContext, useState, ReactNode, useEffect } from "react"
+import { toast } from "sonner";
 
 
 interface Task {
@@ -25,6 +26,7 @@ interface Iclient {
     PendingTask: Task[],
     TrackingTasks: Task[],
     UserRole: string | null
+
 }
 
 const CreateClientContext = createContext<Iclient | null>(null)
@@ -43,26 +45,27 @@ export const ClientProvider = ({ children }: Iprops) => {
     const [TrackingTasks, setTrackingTasks] = useState<Task[]>([])
     const [UserRole, setUserRole] = useState<null | string>(null)
 
+ 
+
+
+
     const CreateProfile = async (companyName: string, companyType: string, purpose: string, name: string, Employes: string) => {
-        setLoading(true)
+        setLoading(true)   // ✅ move this outside try
         try {
             const response = await fetch('/api/clientprofile', {
                 method: "POST",
-                headers: {
-                    "content-type": "application/json"
-                },
+                headers: { "content-type": "application/json" },
                 body: JSON.stringify({ companyName, companyType, purpose, name, Employes })
             })
-
             const data = await response.json()
             console.log(data)
+            toast("Profile created successfully!")
         } catch (error) {
-            console.log("failed to create the profile")
+            toast("Failed to create the profile")
         } finally {
-            setLoading(false)
+            setLoading(false)  // ✅ always runs
         }
     }
-
 
 
     const CreateTask = async (vehicalType: string, startDate: Date, numberOfWorker: number) => {
@@ -75,7 +78,14 @@ export const ClientProvider = ({ children }: Iprops) => {
                 },
                 body: JSON.stringify({ vehicalType, startDate, numberOfWorker })
             })
+          
             const data = await response.json()
+            toast("Create the Task SUccessfully")
+              if (!response.ok) {
+                if (response.status===400) {
+                    toast(data.error)
+                }
+            }
             console.log(data)
             await fetchTaskOfClient()
             setLoading(false)
@@ -122,6 +132,7 @@ export const ClientProvider = ({ children }: Iprops) => {
             body: JSON.stringify({ taskid })
         })
         const data = await response.json()
+        console.log(data)
         await fetchTaskOfClient()
         setLoading(false)
     }
@@ -139,7 +150,7 @@ export const ClientProvider = ({ children }: Iprops) => {
             })
 
             if (!response.ok) {
-                throw new Error("Failed to fetch the task")
+                toast("Failed to fetch the task")
             }
 
             const data = await response.json()
@@ -156,7 +167,25 @@ export const ClientProvider = ({ children }: Iprops) => {
     }
 
 
+  async function fetchMe() {
+    setLoading(true)
 
+    const response = await fetch('/api/UserRole',{
+        method:"GET",
+        headers:{
+            'content-type':'application/json'
+        }
+    })
+
+    const data = await response.json()
+    console.log(data.UserRole.role)
+    setUserRole(data.UserRole.role)
+    setLoading(false)
+  }
+
+  useEffect(()=>{
+    fetchMe()
+  },[])
 
 
 

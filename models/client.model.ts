@@ -26,8 +26,7 @@ const ClientSchema = new Schema<Iclient>({
     },
     purpose:{
         type:String,
-        maxLength:[20,"at least one line must be written"]
-        
+        required:true
     },
     name:{
         type:String,

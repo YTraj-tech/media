@@ -1,30 +1,23 @@
-import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
-import { connectDB } from "@/lib/dbconnect";
 import { User } from "../../../../models/user.model";
+import { auth } from "@clerk/nextjs/server";
+import { NextRequest , NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req:NextRequest) {
   try {
-    const { userId } = await auth();
+    const {userId} = await auth()
+     if (!userId) {
+      return NextResponse.json({error:"unathorized"},{status:401})
+     }
 
-    if (!userId) {
-      return NextResponse.json({ role: null }, { status: 401 });
-    }
+     const UserRole = await User.findOne({clerkId:userId}).select('role').lean()
 
-    await connectDB();
+     if (!UserRole) {
+       return NextResponse.json({error:"The User role is not present"},{status:404})
+     }
 
-    const user = await User.findOne({ clerkId: userId })
-      .select("role")
-      .lean();
-
-    return NextResponse.json({
-      role: user?.role || "client",
-    });
-
+     return  NextResponse.json({UserRole},{status:200})
   } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch role" },
-      { status: 500 }
-    );
+    console.error(error)
+    NextResponse.json({error:"Internal server error"},{status:500})
   }
 }

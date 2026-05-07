@@ -17,7 +17,7 @@ interface IWorkerData {
 // Dynamically import map to avoid SSR issues with Leaflet
 const MapComponent = dynamic(() => import('@/components/WorkerCompo/MapComponent'), {
     ssr: false,
-    loading: () => <Loading/>,
+    loading: () => <Loading />,
 })
 
 const TrackPage = () => {
@@ -49,7 +49,7 @@ const TrackPage = () => {
                 return
             }
 
-            setWorkers(data.data)
+            setWorkers(data.result)
             setActiveTask(true)
             setStop(data.stop)
 
@@ -85,39 +85,38 @@ const TrackPage = () => {
 
 
 
-    const validWorkers = workers.filter(
-        (w) => w.location.lat !== null && w.location.lng !== null
-    )
+
 
     return (
         <div style={{ fontFamily: 'sans-serif', padding: '16px' }} className='border-l-2 h-full text-center border-gray-300'>
             <h1 className='text-2xl'>Live Tracking</h1>
 
-            {loading && <Loading/>}
 
             {!loading && error && (
                 <p className='text-red-400 text-xl'>Make the Task Live To Fetch The location</p>
             )}
 
-            
+
 
             {/* Leaflet Map — loaded dynamically (no SSR) */}
-            {!error && validWorkers.length > 0 && (
-                <MapComponent workers={validWorkers} />
+            {!error && workers.length > 0 && (
+                <MapComponent workers={workers} />
             )}
 
             {/* Worker list */}
-            {!loading && !error && workers.length > 0 && (
-                <ul style={{ marginTop: '16px' }}>
-                    {workers.map((worker, i) => (
-                        <li key={i}>
-                            <strong>Worker:</strong> {worker.workerId} |{' '}
-                            <strong>Lat:</strong> {worker.location.lat ?? 'N/A'},{' '}
-                            <strong>Lng:</strong> {worker.location.lng ?? 'N/A'} |{' '}
-                            <strong>Status:</strong> {worker.status}
-                        </li>
-                    ))}
-                </ul>
+            {loading ? "loading..." : (
+                !error && workers.length > 0 && (
+                    <ul style={{ marginTop: '16px' }}>
+                        {workers.map((worker, i) => (
+                            <li key={i}>
+                                <strong>Worker:</strong> {worker.workerId} |{' '}
+                                <strong>Lat:</strong> {worker.location.lat ?? 'N/A'},{' '}
+                                <strong>Lng:</strong> {worker.location.lng ?? 'N/A'} |{' '}
+                                <strong>Status:</strong> {worker.status}
+                            </li>
+                        ))}
+                    </ul>
+                )
             )}
         </div>
     )

@@ -19,6 +19,8 @@ const Inco = Inconsolata({
 
 
 const ProfilePage = () => {
+
+  const [loading , setloading] = useState(false)
   const [formData, setFormData] = useState({
     companyName: '',
     companyType: '',
@@ -28,7 +30,8 @@ const ProfilePage = () => {
   })
 
 
-  const { CreateProfile, loading } = UseClientContext()
+
+  const { CreateProfile} = UseClientContext()
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -38,8 +41,9 @@ const ProfilePage = () => {
   }
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setloading(true)
     console.log('loading...', loading)
     await CreateProfile(
       formData.companyName,
@@ -49,7 +53,7 @@ const ProfilePage = () => {
       formData.employees
     )
     console.log('loading...', loading)
-
+    setloading(false)
     handleReset()
   }
 

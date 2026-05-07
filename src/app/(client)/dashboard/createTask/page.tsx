@@ -38,14 +38,15 @@ const infoCards = [
   },
 ]
 
-const CreateTask = () => {
+const CreateTaskPage = () => {
+  const [loading,setloading] = useState(false)
   const [formData, setFormData] = useState({
     vehicleType: '',
     startDate: '',
     numberOfWorker: '',
   })
 
-  const { CreateTask, loading } = UseClientContext()
+  const { CreateTask} = UseClientContext()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -54,11 +55,13 @@ const CreateTask = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setloading(true)
     await CreateTask(
       formData.vehicleType,
       new Date(formData.startDate),
       Number(formData.numberOfWorker)
     )
+    setloading(false)
     handleReset()
 
   }
@@ -254,4 +257,4 @@ const CreateTask = () => {
   )
 }
 
-export default CreateTask
+export default CreateTaskPage

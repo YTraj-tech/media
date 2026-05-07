@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { UseClientContext } from '@/context/ClientContext';
 import { useWorker } from '@/context/workerContext';
+import { toast } from 'sonner';
 
 interface Task {
   _id: string;
@@ -31,7 +32,10 @@ const SingelTask = () => {
     if (taskid && typeof taskid === 'string') {
       StoptheTask(taskid)
       await fetchWorkerProfile()
+
+      alert("Stoped the Task")
     }
+    
   }
 
   const fetchSingelTask = async () => {
@@ -50,12 +54,12 @@ const SingelTask = () => {
 
       if (!response.ok) {
         if (response.status === 404) {
-          throw new Error('Task not found')
+          toast('Task not found')
         }
         if (response.status === 401) {
-          throw new Error('Unauthorized access')
+         toast('Unauthorized access')
         }
-        throw new Error('Failed to fetch task')
+        toast('Failed to fetch task')
       }
 
       const data = await response.json()

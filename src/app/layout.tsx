@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { AdminProvider } from '@/context/AdminContext';
 import { ClientProvider } from '@/context/ClientContext';
 import { WorkerProvider } from '@/context/workerContext';
+import { Toaster } from '@/components/ui/sonner';
 
 
 
@@ -23,6 +24,7 @@ export default async function layout({ children }: { children: React.ReactNode }
             <AdminProvider>
               <WorkerProvider>
                 {children}
+                <Toaster/>
               </WorkerProvider>
             </AdminProvider>
           </ClientProvider>

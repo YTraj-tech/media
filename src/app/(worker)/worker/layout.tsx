@@ -1,9 +1,7 @@
-import { UseClientContext } from '@/context/ClientContext'
-import React from 'react'
 
 const WorkerLayout = ({ children }: { children: React.ReactNode }) => {
 
-  return (
+  return(
     <div>
       {children}
     </div>
