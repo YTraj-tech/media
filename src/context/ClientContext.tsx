@@ -45,7 +45,7 @@ export const ClientProvider = ({ children }: Iprops) => {
     const [TrackingTasks, setTrackingTasks] = useState<Task[]>([])
     const [UserRole, setUserRole] = useState<null | string>(null)
 
- 
+
 
 
 
@@ -78,11 +78,11 @@ export const ClientProvider = ({ children }: Iprops) => {
                 },
                 body: JSON.stringify({ vehicalType, startDate, numberOfWorker })
             })
-          
+
             const data = await response.json()
             toast("Create the Task SUccessfully")
-              if (!response.ok) {
-                if (response.status===400) {
+            if (!response.ok) {
+                if (response.status === 400) {
                     toast(data.error)
                 }
             }
@@ -166,26 +166,56 @@ export const ClientProvider = ({ children }: Iprops) => {
         }
     }
 
+    async function fetchMe() {
+        try {
 
-  async function fetchMe() {
-    setLoading(true)
+            setLoading(true)
 
-    const response = await fetch('/api/UserRole',{
-        method:"GET",
-        headers:{
-            'content-type':'application/json'
+            // ✅ check localStorage first
+            const storedRole = localStorage.getItem("role")
+
+            if (storedRole) {
+                setUserRole(storedRole)
+            }
+
+            // ✅ fetch latest role from backend
+            const response = await fetch('/api/UserRole', {
+                method: "GET",
+                headers: {
+                    'content-type': 'application/json'
+                }
+            })
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch role")
+            }
+
+            const data = await response.json()
+
+            const role = data.UserRole.role
+
+            console.log(role)
+
+            // ✅ update context
+            setUserRole(role)
+
+            // ✅ update localStorage
+            localStorage.setItem("role", role)
+
+        } catch (error) {
+
+            console.error(error)
+
+        } finally {
+
+            setLoading(false)
+
         }
-    })
+    }
 
-    const data = await response.json()
-    console.log(data.UserRole.role)
-    setUserRole(data.UserRole.role)
-    setLoading(false)
-  }
-
-  useEffect(()=>{
-    fetchMe()
-  },[])
+    useEffect(() => {
+        fetchMe()
+    }, [])
 
 
 

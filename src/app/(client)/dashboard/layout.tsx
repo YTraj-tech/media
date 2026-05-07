@@ -1,10 +1,11 @@
+
 import SideBar from '@/components/clientCompo/SideBar'
 
 
-
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
- 
 
+
+ 
 
   return (
     <div className="flex h-full ">

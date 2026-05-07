@@ -1,15 +1,26 @@
-
-
-
-
-
 'use client'
 import Link from "next/link"
 import { useAdminhook } from "@/context/AdminContext"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 
 const AdminPage = () => {
+     const router = useRouter()
+
   const { loading, pendingTask } = useAdminhook()
+
+
+
+  useEffect(() => {
+
+    const role = localStorage.getItem("role")
+
+    if (role !== "Admin") {
+      router.push('/')
+    } 
+
+  }, [router])
 
 
   return (

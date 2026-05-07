@@ -1,5 +1,5 @@
 
-
+'use client'
 import { HoverBorderGradientDemo } from "@/components/ReuseCompo/Button"
 import { Card, CardContent, CardTitle } from "@/components/ui/card"
 import { Search } from "lucide-react"
@@ -8,8 +8,9 @@ import { TableOfTask } from "@/components/clientCompo/TabelofTask"
 import { Button } from "@/components/ui/button"
 import FilterData from "@/components/clientCompo/FilterData"
 import ClientCard from "@/components/clientCompo/UserProfile"
-import React, { Suspense } from "react"
+import React, { Suspense, useEffect } from "react"
 import { UserButton } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 
 const CardData = React.lazy(() => import("@/components/clientCompo/CardData"));
 
@@ -20,6 +21,19 @@ const Vend = Noto_Sans_Display({
 })
 
 const ClientPage = () => {
+
+  const router = useRouter()
+
+
+  useEffect(() => {
+
+    const role = localStorage.getItem("role")
+
+    if (role !== "client") {
+      router.push('/')
+    }
+
+  }, [router])
 
   return (
     <div className=" h-full  flex flex-row   border-l-2 border-b-2  border-gray-300  ml-20">
@@ -36,7 +50,7 @@ const ClientPage = () => {
           <p className="text-sm ml-3 text-gray-400 mb-5">
             Monitor, manage, and optimize all your campaigns from a single place.
           </p>
-             <UserButton/>
+          <UserButton />
         </div>
         <Suspense fallback={<p>loading...</p>}>
           <CardData />
