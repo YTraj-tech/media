@@ -16,7 +16,7 @@ const CardData = () => {
         <section className='flex ml-9 gap-9 items-stretch'>
 
             {/* Total Tasks Completed - Dark Card */}
-            <Card className="flex flex-row justify-between items-center relative w-1/3 rounded-3xl p-5  border-2 border-gray-200 text-white bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800">
+            <Card className="flex flex-row justify-between items-center relative w-1/3 rounded-3xl p-5  border-2 border-gray-200 text-white bg-linear-to-r from-gray-600 via-gray-700 to-gray-800">
                 <div className="flex flex-col">
                     <CardTitle className={`text-3xl mb-1 ${Vend.className}`}>Completed Tasks</CardTitle>
                     <span className='ml-1 text-gray-400 text-sm'>      Successfully finished across all campaigns</span>

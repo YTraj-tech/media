@@ -42,7 +42,7 @@ export default function Footer() {
           <motion.div variants={itemVariants} className="flex flex-col justify-between">
             <a
               href="#"
-              className="text-5xl font-bold  mx-12 text-[#1a1a1a] transition-opacity duration-200 hover:opacity-50"
+              className="text-2xl  md:text-5xl font-bold  mx-12 text-[#1a1a1a] transition-opacity duration-200 hover:opacity-50"
               style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "-0.01em" }}
             >
               Woodwind
