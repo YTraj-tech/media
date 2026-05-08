@@ -155,11 +155,11 @@ const NavBar = () => {
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-x-8">
-            {navLinks.map(({ href, label, className }) => (
+            {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className={` text-lg md:text-xl transition-colors hover:text-blue-600 ${className ?? 'text-gray-700'}`}
+                className={` text-lg md:text-xl transition-colors hover:text-blue-600 ${'text-gray-700'}`}
               >
                 {label}
               </Link>
@@ -199,12 +199,12 @@ const NavBar = () => {
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 shadow-md">
           <div className="flex flex-col px-4 py-3 gap-y-3">
-            {navLinks.map(({ href, label, className }) => (
+            {navLinks.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className={`text-base font-medium py-1 transition-colors hover:text-blue-600 ${className ?? 'text-gray-700'}`}
+                className={`text-base font-medium py-1 transition-colors hover:text-blue-600 text-gray-700`}
               >
                 {label}
               </Link>
