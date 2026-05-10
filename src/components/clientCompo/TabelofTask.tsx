@@ -1,86 +1,76 @@
+'use client'
 
-const invoices = [
-    { invoice: "INV001", paymentStatus: "Paid", totalAmount: "$250.00", paymentMethod: "Credit Card" },
-    { invoice: "INV002", paymentStatus: "Pending", totalAmount: "$150.00", paymentMethod: "PayPal" },
-    { invoice: "INV003", paymentStatus: "Unpaid", totalAmount: "$350.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV004", paymentStatus: "Paid", totalAmount: "$450.00", paymentMethod: "Credit Card" },
-    { invoice: "INV005", paymentStatus: "Paid", totalAmount: "$550.00", paymentMethod: "PayPal" },
-    { invoice: "INV006", paymentStatus: "Pending", totalAmount: "$200.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV007", paymentStatus: "Unpaid", totalAmount: "$300.00", paymentMethod: "Credit Card" },
-    { invoice: "INV001", paymentStatus: "Paid", totalAmount: "$250.00", paymentMethod: "Credit Card" },
-    { invoice: "INV002", paymentStatus: "Pending", totalAmount: "$150.00", paymentMethod: "PayPal" },
-    { invoice: "INV003", paymentStatus: "Unpaid", totalAmount: "$350.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV004", paymentStatus: "Paid", totalAmount: "$450.00", paymentMethod: "Credit Card" },
-    { invoice: "INV005", paymentStatus: "Paid", totalAmount: "$550.00", paymentMethod: "PayPal" },
-    { invoice: "INV006", paymentStatus: "Pending", totalAmount: "$200.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV007", paymentStatus: "Unpaid", totalAmount: "$300.00", paymentMethod: "Credit Card" },
-    { invoice: "INV004", paymentStatus: "Paid", totalAmount: "$450.00", paymentMethod: "Credit Card" },
-    { invoice: "INV005", paymentStatus: "Paid", totalAmount: "$550.00", paymentMethod: "PayPal" },
-    { invoice: "INV006", paymentStatus: "Pending", totalAmount: "$200.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV007", paymentStatus: "Unpaid", totalAmount: "$300.00", paymentMethod: "Credit Card" },
-    { invoice: "INV002", paymentStatus: "Pending", totalAmount: "$150.00", paymentMethod: "PayPal" },
-    { invoice: "INV003", paymentStatus: "Unpaid", totalAmount: "$350.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV004", paymentStatus: "Paid", totalAmount: "$450.00", paymentMethod: "Credit Card" },
-    { invoice: "INV005", paymentStatus: "Paid", totalAmount: "$550.00", paymentMethod: "PayPal" },
-    { invoice: "INV006", paymentStatus: "Pending", totalAmount: "$200.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV007", paymentStatus: "Unpaid", totalAmount: "$300.00", paymentMethod: "Credit Card" },
-    { invoice: "INV004", paymentStatus: "Paid", totalAmount: "$450.00", paymentMethod: "Credit Card" },
-    { invoice: "INV005", paymentStatus: "Paid", totalAmount: "$550.00", paymentMethod: "PayPal" },
-    { invoice: "INV006", paymentStatus: "Pending", totalAmount: "$200.00", paymentMethod: "Bank Transfer" },
-    { invoice: "INV007", paymentStatus: "Unpaid", totalAmount: "$300.00", paymentMethod: "Credit Card" },
-]
+import React, { useEffect } from "react"
+import { UseClientContext } from "@/context/ClientContext"
 
 const badgeClass: Record<string, string> = {
-    Paid: "bg-green-100 text-green-800",
-    Pending: "bg-yellow-100 text-yellow-800",
-    Unpaid: "bg-red-100 text-red-800",
+    YES: "bg-green-100 text-green-800",
+    TRACKING: "bg-yellow-100 text-yellow-800",
+    NO: "bg-red-100 text-red-800",
 }
 
- 
 export const TableOfTask = () => {
+
+    const { FilterdTasks, filterLoading,selectfilter , FilterTasks } = UseClientContext()  
+      console.log(FilterdTasks.length,"hello length")
+    // ✅ show loading spinner while fetching
+
+     useEffect(()=>{
+        FilterTasks(selectfilter)
+     },[])
+
+    if (filterLoading) {
+        return (
+            <div className="mx-9 border rounded-xl bg-white flex items-center justify-center py-10">
+                <p className="text-gray-400 text-sm">Loading tasks...</p>
+            </div>
+        )
+    }
+
     return (
-        <div className="flex flex-col  min-h-0 w-fit mx-9 border-r-2  rounded-xl">
-            {/* Header — never shrinks */}
-            <table className="w-full border-collapse text-sm table-fixed ">
+        <div  className="mx-9 border rounded-xl overflow-x-hidden bg-white">
+            <table className="w-full border-collapse">
+
+                {/* HEADER */}
                 <thead className="bg-gray-50">
-                    <tr className="border-b border-gray-200">
-                        <th className="w-28 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Invoice</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Status</th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-gray-500">Method</th>
-                        <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-gray-500">Amount</th>
+                    <tr className="border-b">
+                        <th className="px-4 py-3 text-left text-sm font-semibold">Vehicle</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">Status</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">Workers</th>
+                        <th className="px-4 py-3 text-left text-sm font-semibold">Start Date</th>
                     </tr>
                 </thead>
-            </table>
 
-            {/* Scrollable body — flex-1 + min-h-0 = fills remaining space and actually scrolls */}
-            <div className="flex-1 min-h-0 ">
-                <table className="w-full border-collapse text-sm table-fixed">
-                    <tbody>
-                        {invoices.map((inv, i) => (
-                            <tr key={i} className=" hover:bg-gray-50 transition-colors">
-                                <td className="w-28 px-4 py-3 font-mono text-xs font-medium text-gray-700">{inv.invoice}</td>
+                {/* BODY */}
+                <tbody>
+                    {FilterdTasks.length > 0 ? (
+                        FilterdTasks.map((task) => (
+                            <tr key={task._id} className="border-b hover:bg-gray-50">
+                                <td className="px-4 py-3">{task.vehicalType}</td>
                                 <td className="px-4 py-3">
-                                    <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${badgeClass[inv.paymentStatus]}`}>
-                                        {inv.paymentStatus}
+                                    <span className={`px-2 py-1 rounded-full text-xs ${badgeClass[task.iscompleted]}`}>
+                                        {task.iscompleted}
                                     </span>
                                 </td>
-                                <td className="px-4 py-3 text-gray-600">{inv.paymentMethod}</td>
-                                <td className="px-4 py-3 text-right tabular-nums text-gray-700">{inv.totalAmount}</td>
+                                <td className="px-4 py-3">{task.numberOfWorker}</td>
+                                <td className="px-4 py-3">{new Date(task.startDate).toLocaleDateString()}</td>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={4} className="text-center py-10 text-gray-400">
+                                No Tasks Found
+                            </td>
+                        </tr>
+                    )}
+                </tbody>
 
-            {/* Footer — never shrinks */}
-            <table className="w-full border-collapse text-sm table-fixed shrink-0">
-                <tfoot>
-                    <tr className="border-t-2 border-gray-200 bg-gray-50">
-                        <td colSpan={3} className="px-4 py-3 font-semibold text-gray-700">Total</td>
-                        <td className="px-4 py-3 text-right font-semibold tabular-nums text-gray-700">$2,500.00</td>
-                    </tr>
-                </tfoot>
             </table>
+
+            {/* FOOTER */}
+            <div className="bg-gray-50 px-4 py-3 border-t font-semibold">
+                Total Tasks: {FilterdTasks.length}
+            </div>
         </div>
     )
 }

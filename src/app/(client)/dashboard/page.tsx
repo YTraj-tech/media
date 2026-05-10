@@ -6,13 +6,15 @@ import { Search } from "lucide-react"
 import { Noto_Sans_Display } from "next/font/google"
 import { TableOfTask } from "@/components/clientCompo/TabelofTask"
 import { Button } from "@/components/ui/button"
-import FilterData from "@/components/clientCompo/FilterData"
 import ClientCard from "@/components/clientCompo/UserProfile"
 import React, { Suspense, useEffect } from "react"
 import { UserButton } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
+import { ClientProvider, UseClientContext } from "@/context/ClientContext"
+import TaskFilterTable from "@/components/clientCompo/TaskFilterTable"
 
 const CardData = React.lazy(() => import("@/components/clientCompo/CardData"));
+
 
 
 const Vend = Noto_Sans_Display({
@@ -23,8 +25,6 @@ const Vend = Noto_Sans_Display({
 const ClientPage = () => {
 
   const router = useRouter()
-
-
   useEffect(() => {
 
     const role = localStorage.getItem("role")
@@ -60,9 +60,9 @@ const ClientPage = () => {
           <p className="text-sm ml-3 text-gray-400 mb-9 ">
             Monitor, manage, and optimize all your campaigns from a single place.
           </p>
-          <FilterData />
+            <TaskFilterTable />
 
-          <TableOfTask />
+          
         </div>
       </section>
       <section className="flex-1 bg-[#F5F6F7] h-full  p-9 m-9 rounded-3xl ">

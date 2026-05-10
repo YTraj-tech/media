@@ -1,7 +1,296 @@
+// 'use client'
+
+// import { Alert } from "@/components/ui/alert";
+// import { NullExpression } from "mongoose";
+// import React, { createContext, useContext, useState, ReactNode, useEffect, SetStateAction, Dispatch } from "react"
+// import { toast } from "sonner";
+
+
+// interface Task {
+//     _id: string;
+//     clientId: string;
+//     workerId: string[];
+//     vehicalType: string;
+//     startDate: string;
+//     numberOfWorker: number;
+//     iscompleted: string;
+//     __v: number;
+// }
+
+// interface Iclient {
+//     loading: boolean,
+//     filterLoading: boolean,
+//     CreateProfile: (companyName: string, companyType: string, purpose: string, name: string, Employes: string) => Promise<void>
+//     CreateTask: (vehicleType: string, startDate: Date, numberOfWorker: number) => Promise<void>,
+//     StoptheTask: (taskid: string) => Promise<void>
+//     TaskLive: (taskid: string) => Promise<void>
+//     fetchTaskOfClient: () => Promise<void>,
+//     PendingTask: Task[],
+//     TrackingTasks: Task[],
+//     UserRole: string | null
+//     setselectfilter: Dispatch<SetStateAction<string>>
+//     selectfilter: string
+//     FilterdTasks: Task[]
+//     FilterTasks: () => Promise<void>
+// }
+
+// const CreateClientContext = createContext<Iclient | null>(null)
+
+// interface Iprops {
+//     children: ReactNode
+// }
+
+
+
+// export const ClientProvider = ({ children }: Iprops) => {
+
+//     const [loading, setLoading] = useState(false)
+//     const [Workers, setWorkers] = useState<String[]>([])
+//     const [PendingTask, setPendingTasks] = useState<Task[]>([])
+//     const [TrackingTasks, setTrackingTasks] = useState<Task[]>([])
+//     const [UserRole, setUserRole] = useState<null | string>(null)
+//     const [selectfilter, setselectfilter] = useState<string>('')
+//     const [FilterdTasks, setFilterdTasks] = useState<Task[]>([])
+//     const [filterLoading, setFilterLoading] = useState(false)  // ✅ separate loading
+
+
+
+
+
+//     const CreateProfile = async (companyName: string, companyType: string, purpose: string, name: string, Employes: string) => {
+//         setLoading(true)   // ✅ move this outside try
+//         try {
+//             const response = await fetch('/api/clientprofile', {
+//                 method: "POST",
+//                 headers: { "content-type": "application/json" },
+//                 body: JSON.stringify({ companyName, companyType, purpose, name, Employes })
+//             })
+//             const data = await response.json()
+//             console.log(data)
+//             toast("Profile created successfully!")
+//         } catch (error) {
+//             toast("Failed to create the profile")
+//         } finally {
+//             setLoading(false)  // ✅ always runs
+//         }
+//     }
+
+
+//     const CreateTask = async (vehicalType: string, startDate: Date, numberOfWorker: number) => {
+//         setLoading(true)
+//         try {
+//             const response = await fetch('/api/clientTask', {
+//                 method: "POST",
+//                 headers: {
+//                     'content-type': "application/json"
+//                 },
+//                 body: JSON.stringify({ vehicalType, startDate, numberOfWorker })
+//             })
+
+//             const data = await response.json()
+//             toast("Create the Task SUccessfully")
+//             if (!response.ok) {
+//                 if (response.status === 400) {
+//                     toast(data.error)
+//                 }
+//             }
+//             console.log(data)
+//             await fetchTaskOfClient()
+//             setLoading(false)
+//         } catch (err) {
+//             setLoading(false)
+//             console.log("failed to create the profile")
+//         }
+//     }
+
+
+//     const StoptheTask = async (taskid: string) => {
+//         try {
+//             setLoading(true)
+
+//             const response = await fetch(`/api/clientStopTask/${taskid}`, {
+//                 method: "PATCH",
+//                 credentials: "include",
+//                 headers: {
+//                     'content-type': "application/json"
+//                 },
+//             })
+
+//             const data = await response.json()
+
+//             console.log(data)
+//             await fetchTaskOfClient()
+//             setLoading(false)
+
+//         } catch (err) {
+//             setLoading(false)
+//             console.log(err)
+//         }
+//     }
+
+
+
+//     const TaskLive = async (taskid: string) => {
+//         setLoading(true)
+//         const response = await fetch('/api/makeTaskLive', {
+//             method: "PATCH",
+//             headers: {
+//                 "content-type": "application/json"
+//             },
+//             body: JSON.stringify({ taskid })
+//         })
+//         const data = await response.json()
+//         console.log(data)
+//         await fetchTaskOfClient()
+//         setLoading(false)
+//     }
+
+
+//     const fetchTaskOfClient = async () => {
+//         setLoading(true)
+//         try {
+//             const response = await fetch('/api/clientAllTask', {
+//                 method: "GET",
+//                 headers: {
+//                     'content-type': "application/json"
+//                 },
+//                 credentials: "include"
+//             })
+
+//             if (!response.ok) {
+//                 toast("Failed to fetch the task")
+//             }
+
+//             const data = await response.json()
+//             console.log(data)
+
+//             setPendingTasks(data.AllPendingTask || [])
+//             setTrackingTasks(data.AllTrackingTask || [])
+//             setLoading(false)
+//         } catch (error) {
+//             console.error("Error fetching tasks:", error)
+//         } finally {
+//             setLoading(false)
+//         }
+//     }
+
+//     async function fetchMe() {
+//         try {
+
+//             setLoading(true)
+
+//             // ✅ check localStorage first
+//             const storedRole = localStorage.getItem("role")
+
+//             if (storedRole) {
+//                 setUserRole(storedRole)
+//             }
+
+//             // ✅ fetch latest role from backend
+//             const response = await fetch('/api/UserRole', {
+//                 method: "GET",
+//                 headers: {
+//                     'content-type': 'application/json'
+//                 }
+//             })
+
+//             if (!response.ok) {
+//                 throw new Error("Failed to fetch role")
+//             }
+
+//             const data = await response.json()
+
+//             const role = data.UserRole.role
+
+//             console.log(role)
+
+//             // ✅ update context
+//             setUserRole(role)
+
+//             // ✅ update localStorage
+//             localStorage.setItem("role", role)
+
+//         } catch (error) {
+
+//             console.error(error)
+
+//         } finally {
+
+//             setLoading(false)
+
+//         }
+//     }
+
+//     useEffect(() => {
+//         fetchMe()
+//     }, [])
+
+
+
+//     // FILTER TASKS
+
+//     const FilterTasks = async () => {
+//         setFilterLoading(true)
+//         try {
+//             const response = await fetch(
+//                 `/api/clientFilterTask?selectfilter=${selectfilter}`,
+//                 {
+//                     method: "GET",
+//                     headers: { 'content-type': 'application/json' }
+//                 }
+//             )
+//             const data = await response.json()
+//             console.log(data.FilterTask || [])
+//             setFilterdTasks(data.FilterTask || [])
+
+//         } catch (error) {
+//             console.log(error)
+//         } finally {
+//             setFilterLoading(false)
+//         }
+//     }
+
+//     useEffect(() => {
+//         FilterTasks()
+//     }, [selectfilter])
+
+//     return (
+//         <CreateClientContext.Provider value={{
+//             CreateProfile,
+//             CreateTask,
+//             StoptheTask,
+//             TaskLive,
+//             fetchTaskOfClient,
+//             PendingTask,
+//             TrackingTasks,
+//             loading,
+//             filterLoading,   // ✅ exposed
+//             UserRole,
+//             setselectfilter,
+//             selectfilter,
+//             FilterdTasks,
+//             FilterTasks
+//         }}>
+//             {children}
+//         </CreateClientContext.Provider>
+//     )
+// }
+
+// export const UseClientContext = () => {
+//     const context = useContext(CreateClientContext)
+
+//     if (!context) {
+//         throw new Error("useAppContext must be used inside AppProvider");
+//     }
+
+//     return context
+// }
+
+
+
 'use client'
 
-import { Alert } from "@/components/ui/alert";
-import { createContext, useContext, useState, ReactNode, useEffect } from "react"
+import React, { createContext, useContext, useState, ReactNode, useEffect, SetStateAction, Dispatch } from "react"
 import { toast } from "sonner";
 
 
@@ -18,6 +307,7 @@ interface Task {
 
 interface Iclient {
     loading: boolean,
+    filterLoading: boolean,
     CreateProfile: (companyName: string, companyType: string, purpose: string, name: string, Employes: string) => Promise<void>
     CreateTask: (vehicleType: string, startDate: Date, numberOfWorker: number) => Promise<void>,
     StoptheTask: (taskid: string) => Promise<void>
@@ -26,7 +316,7 @@ interface Iclient {
     PendingTask: Task[],
     TrackingTasks: Task[],
     UserRole: string | null
-
+  
 }
 
 const CreateClientContext = createContext<Iclient | null>(null)
@@ -35,22 +325,19 @@ interface Iprops {
     children: ReactNode
 }
 
-
-
 export const ClientProvider = ({ children }: Iprops) => {
 
     const [loading, setLoading] = useState(false)
-    const [Workers, setWorkers] = useState<String[]>([])
     const [PendingTask, setPendingTasks] = useState<Task[]>([])
     const [TrackingTasks, setTrackingTasks] = useState<Task[]>([])
     const [UserRole, setUserRole] = useState<null | string>(null)
 
-
-
-
+    const [selectfilter, setselectfilter] = useState<string>('ALL')  // ✅ default ALL
+    const [FilterdTasks, setFilterdTasks] = useState<Task[]>([])
+    const [filterLoading, setFilterLoading] = useState(false)
 
     const CreateProfile = async (companyName: string, companyType: string, purpose: string, name: string, Employes: string) => {
-        setLoading(true)   // ✅ move this outside try
+        setLoading(true)
         try {
             const response = await fetch('/api/clientprofile', {
                 method: "POST",
@@ -63,102 +350,85 @@ export const ClientProvider = ({ children }: Iprops) => {
         } catch (error) {
             toast("Failed to create the profile")
         } finally {
-            setLoading(false)  // ✅ always runs
+            setLoading(false)
         }
     }
-
 
     const CreateTask = async (vehicalType: string, startDate: Date, numberOfWorker: number) => {
         setLoading(true)
         try {
             const response = await fetch('/api/clientTask', {
                 method: "POST",
-                headers: {
-                    'content-type': "application/json"
-                },
+                headers: { 'content-type': "application/json" },
                 body: JSON.stringify({ vehicalType, startDate, numberOfWorker })
             })
-
             const data = await response.json()
-            toast("Create the Task SUccessfully")
-            if (!response.ok) {
-                if (response.status === 400) {
-                    toast(data.error)
-                }
+            if (!response.ok && response.status === 400) {
+                toast(data.error)
+            } else {
+                toast("Task created successfully!")
             }
             console.log(data)
             await fetchTaskOfClient()
-            setLoading(false)
         } catch (err) {
+            console.log("failed to create the task")
+        } finally {
             setLoading(false)
-            console.log("failed to create the profile")
         }
     }
 
-
     const StoptheTask = async (taskid: string) => {
+        setLoading(true)
         try {
-            setLoading(true)
-
             const response = await fetch(`/api/clientStopTask/${taskid}`, {
                 method: "PATCH",
                 credentials: "include",
-                headers: {
-                    'content-type': "application/json"
-                },
+                headers: { 'content-type': "application/json" },
             })
-
             const data = await response.json()
-
             console.log(data)
             await fetchTaskOfClient()
-            setLoading(false)
-
         } catch (err) {
-            setLoading(false)
             console.log(err)
+        } finally {
+            setLoading(false)
         }
     }
 
-
-
     const TaskLive = async (taskid: string) => {
         setLoading(true)
-        const response = await fetch('/api/makeTaskLive', {
-            method: "PATCH",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify({ taskid })
-        })
-        const data = await response.json()
-        console.log(data)
-        await fetchTaskOfClient()
-        setLoading(false)
+        try {
+            const response = await fetch('/api/makeTaskLive', {
+                method: "PATCH",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ taskid })
+            })
+            const data = await response.json()
+            console.log(data)
+            await fetchTaskOfClient()
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setLoading(false)
+        }
     }
-
 
     const fetchTaskOfClient = async () => {
         setLoading(true)
         try {
             const response = await fetch('/api/clientAllTask', {
                 method: "GET",
-                headers: {
-                    'content-type': "application/json"
-                },
+                headers: { 'content-type': "application/json" },
                 credentials: "include"
             })
-
             if (!response.ok) {
                 toast("Failed to fetch the task")
+                return
             }
-
             const data = await response.json()
             console.log(data)
-
             setPendingTasks(data.AllPendingTask || [])
             setTrackingTasks(data.AllTrackingTask || [])
-            setLoading(false)
         } catch (error) {
             console.error("Error fetching tasks:", error)
         } finally {
@@ -168,48 +438,25 @@ export const ClientProvider = ({ children }: Iprops) => {
 
     async function fetchMe() {
         try {
-
             setLoading(true)
-
-            // ✅ check localStorage first
             const storedRole = localStorage.getItem("role")
+            if (storedRole) setUserRole(storedRole)
 
-            if (storedRole) {
-                setUserRole(storedRole)
-            }
-
-            // ✅ fetch latest role from backend
             const response = await fetch('/api/UserRole', {
                 method: "GET",
-                headers: {
-                    'content-type': 'application/json'
-                }
+                headers: { 'content-type': 'application/json' }
             })
-
-            if (!response.ok) {
-                throw new Error("Failed to fetch role")
-            }
+            if (!response.ok) throw new Error("Failed to fetch role")
 
             const data = await response.json()
-
             const role = data.UserRole.role
-
             console.log(role)
-
-            // ✅ update context
             setUserRole(role)
-
-            // ✅ update localStorage
             localStorage.setItem("role", role)
-
         } catch (error) {
-
             console.error(error)
-
         } finally {
-
             setLoading(false)
-
         }
     }
 
@@ -217,10 +464,20 @@ export const ClientProvider = ({ children }: Iprops) => {
         fetchMe()
     }, [])
 
-
-
+   
     return (
-        <CreateClientContext.Provider value={{ CreateProfile, CreateTask, StoptheTask, TaskLive, fetchTaskOfClient, PendingTask, TrackingTasks, loading, UserRole }}>
+        <CreateClientContext.Provider value={{
+            CreateProfile,
+            CreateTask,
+            StoptheTask,
+            TaskLive,
+            fetchTaskOfClient,
+            PendingTask,
+            TrackingTasks,
+            loading,
+            filterLoading,
+            UserRole
+        }}>
             {children}
         </CreateClientContext.Provider>
     )
@@ -228,10 +485,8 @@ export const ClientProvider = ({ children }: Iprops) => {
 
 export const UseClientContext = () => {
     const context = useContext(CreateClientContext)
-
     if (!context) {
         throw new Error("useAppContext must be used inside AppProvider");
     }
-
     return context
 }

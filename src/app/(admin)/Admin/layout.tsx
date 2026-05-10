@@ -5,7 +5,7 @@ const AdminLayout = ({
 }: {
   children: React.ReactNode
 }) => {
-return (
+  return (
     <div>
       {children}
     </div>

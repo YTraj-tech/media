@@ -14,13 +14,13 @@ interface Itask {
 const TaskSchema = new Schema<Itask>({
     clientId: {
         type: Schema.Types.ObjectId,
-        ref:"client",
+        ref: "client",
         required: true
     },
     workerId: [
         {
             type: Schema.Types.ObjectId,
-            ref:"Worker"
+            ref: "Worker"
         }
     ],
     vehicalType: {
@@ -34,12 +34,12 @@ const TaskSchema = new Schema<Itask>({
     numberOfWorker: {
         type: Number,
         default: 0,
-        required:true
+        required: true
     },
-   
+
     iscompleted: {
-        type:String,
-        enum:["NO" , "TRACKING" , "YES"],
+        type: String,
+        enum: ["NO", "TRACKING", "YES"],
         default: "NO"
     },
     review: {
