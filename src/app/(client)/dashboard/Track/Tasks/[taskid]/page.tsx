@@ -242,9 +242,10 @@ const SingelTask = () => {
             <div className="flex gap-4 pt-4">
               <button
                 onClick={handelStopTask}
+                disabled={loading}
                 className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
               >
-                Stop Task
+               {loading ? "stoping.." : "Stop"}
               </button>
 
             </div>
