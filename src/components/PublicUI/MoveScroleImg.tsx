@@ -16,8 +16,8 @@ export function MoveScroleImg() {
     ));
 
     return (
-        <div className="w-full h-full my-9  ">
-            <h1 className={`max-w-7xl ${Space.className}  mx-auto text-7xl text-neutral-800 dark:text-neutral-200 `}>
+        <div className="w-full h-full my-5 px-5">
+            <h1 className={`max-w-7xl ${Space.className}  mx-auto text-3xl sm:text-5xl lg:text-7xl xl:text-8xl text-neutral-800 dark:text-neutral-200 `}>
                 HERE'S A<br />SNEAK PEAK
             </h1>
             <Carousel items={cards} />
