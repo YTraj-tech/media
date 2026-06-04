@@ -16,7 +16,7 @@ const HeroSection = () => {
     <section className="flex  flex-col lg:mt-20  lg:flex lg:flex-row   md:h-250  ">
       {/* Left half — text */}
       <div className="  lg:w-1/2  text-center mt-24   lg:mt-60 ">
-        <h1 className={`text-3xl  sm:text-5xl lg:text-6xl   2xl:text-9xl  ${unica.className}`}>
+        <h1 className={`text-4xl sm:text-6xl lg:text-6xl   2xl:text-9xl  ${unica.className}`}>
           WELCOMEBRO <br />
           <span>ABROAD</span>
         </h1>
