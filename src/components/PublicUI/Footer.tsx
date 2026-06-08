@@ -22,7 +22,7 @@ const contactLinks = ["CONTACT", "JUST CLICK TO CREATE"];
 export default function Footer() {
   return (
     <footer
-      className="w-full pt-20  text-[#1a1a1a]"
+      className="w-full mt-9  md:pt-20  text-[#1a1a1a]"
       style={{ fontFamily: "'Barlow Condensed', 'Oswald', sans-serif" }}
     >
       {/* Top border */}
