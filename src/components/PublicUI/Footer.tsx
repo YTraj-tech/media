@@ -16,8 +16,8 @@ const itemVariants: Variants = {
   },
 };
 
-const navLinks = ["FAQS", "PRIVATE TOURS", "ABOUT US"];
-const contactLinks = ["CONTACT", "BOOK A TRIP"];
+const navLinks = ["FAQS", "DASHBOARD", "ABOUT US"];
+const contactLinks = ["CONTACT", "JUST CLICK TO CREATE"];
 
 export default function Footer() {
   return (
@@ -45,7 +45,7 @@ export default function Footer() {
               className="text-2xl  md:text-5xl font-bold  mx-12 text-[#1a1a1a] transition-opacity duration-200 hover:opacity-50"
               style={{ fontFamily: "'Barlow Condensed', sans-serif", letterSpacing: "-0.01em" }}
             >
-              Woodwind
+              MEDIA BRIGE
             </a>
           </motion.div>
 
