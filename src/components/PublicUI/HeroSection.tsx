@@ -17,13 +17,13 @@ const HeroSection = () => {
       {/* Left half — text */}
       <div className="  lg:w-1/2  text-center mt-24   lg:mt-60 ">
         <h1 className={`text-4xl sm:text-6xl lg:text-6xl   2xl:text-9xl  ${unica.className}`}>
-          WELCOMEBRO <br />
-          <span>ABROAD</span>
+          CONNECTING <br />
+          <span>MEDIA</span>
         </h1>
 
         <p className='text-sm  md:text-2xl font-extralight my-3 px-3'>
-          The best snorkel excursion according to your friends
-        </p>
+          Find talented editors, videographers, designers, and content creators
+                  </p>
 
         <div className="flex justify-center items-center gap-2 md:gap-6 md:my-6  ">
           <ShimmerButton className="shadow-2xl">

@@ -9,7 +9,7 @@ export function MainText (){
       <VideoText
         src='https://cdn.magicui.design/ocean-small.webm'
        >
-        OCEAN BRO YOU ARE
+        VISIBILITY
       </VideoText>
 
     </div>

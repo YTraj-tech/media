@@ -86,6 +86,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { UserButton, SignInButton, SignUpButton, useUser } from '@clerk/nextjs'
 
 const NavBar = () => {
@@ -150,7 +151,7 @@ const NavBar = () => {
 
           {/* Logo */}
           <div className="text-2xl font-bold tracking-tight text-gray-900">
-            Logo
+            <Image src={'/logo.png'}  alt='logo' height={100} width={100} className='object-cover h-52 w-52' />
           </div>
 
           {/* Desktop Links */}

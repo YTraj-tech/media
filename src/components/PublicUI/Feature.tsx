@@ -36,10 +36,10 @@ const Feature = () => {
         <div className="w-1/2">
           <div className="w-full relative h-100 rounded-2xl overflow-hidden">
             <Image
-              src="/globe.svg" // replace this
+              src="/logo.png" // replace this
               alt="Boat"
               fill
-              className="h-fit w-fit"
+              className="h-fit w-fit object-cover"
             />
           </div>
         </div>
