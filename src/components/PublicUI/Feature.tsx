@@ -13,7 +13,7 @@ const Feature = () => {
       <div className="flex justify-center items-center gap-x-12">
         
         {/* LEFT SIDE */}
-        <div className=" w-full px-3 md:w-1/2 flex flex-col gap-6">
+        <div className=" w-1/2 px-3 md:w-1/2 flex flex-col gap-6">
           <h1 className={`text-2xl sm:text-3xl md:text-5xl  lg:text-6xl xl:text-8xl ${space.className}`}>
             DONT <br />
             MISS THE <br />
@@ -27,7 +27,7 @@ const Feature = () => {
             advance, we suggest <b>reserving as early as possible.</b>
           </p>
 
-          <button className="bg-black text-white px-6 py-3 rounded-xl w-fit">
+          <button className="bg-black text-white md:px-6 md:py-3 rounded-xl w-fit">
             Check Availability
           </button>
         </div>
@@ -39,7 +39,7 @@ const Feature = () => {
               src="/logo.png" // replace this
               alt="Boat"
               fill
-              className="h-fit w-fit object-cover"
+              className=" h-9 w-12  md:object-cover"
             />
           </div>
         </div>
