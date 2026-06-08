@@ -61,7 +61,7 @@ const SideBar = () => {
     <nav className="h-full flex flex-col mx-12 gap-y-16  ">
 
       {/* Logo */}
-         <Image src={'/next.svg'} alt='logo' width={100} height={100} className='h-40 w-40' />
+         <Image src='/logo.png' alt='logo' width={100} height={100} className='md:mt-9 h-12 w-44 object-cover' />
       {/* Nav links */}
 
       <div className="flex flex-col">

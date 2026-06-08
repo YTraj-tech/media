@@ -55,7 +55,7 @@ export const PATCH = async (req: NextRequest) => {
             return NextResponse.json({ message: "You are not assigned to any task" }, { status: 401 })
         }
 
-        const UpdateTheLocation = await Worker.findOneAndUpdate({ _id: existingWorker._id   }, { location: { lat, lng }, status: "WORKING" }, { new: true })
+        const UpdateTheLocation = await Worker.findByIdAndUpdate(existingWorker._id, { location: { lat, lng }, status: "WORKING" }, { returnDocument:"after" })
 
         if (!UpdateTheLocation) {
             return NextResponse.json({ message: "failed To Update The location" }, { status: 403 })

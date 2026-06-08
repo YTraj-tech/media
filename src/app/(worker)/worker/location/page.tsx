@@ -55,7 +55,7 @@ const Workerlocation = () => {
                 null,
                 { enableHighAccuracy: true, timeout: 10000 }
             )
-        }, 10_000)
+        }, 10000)
 
         return () => {
             if (intervalRef.current) clearInterval(intervalRef.current)
