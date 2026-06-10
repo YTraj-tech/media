@@ -2,6 +2,7 @@
 
 import { useAdminhook } from "@/context/AdminContext"
 import { useState } from "react"
+import Loading from "../PublicUI/loading"
 
 interface Task {
   numberOfWorker: number
@@ -55,7 +56,7 @@ const AssignWorkers = ({ taskid, Task , fetchSingleTaskDetail }: ItaskId) => {
 
           </select>
 
-          <button disabled={assignloading} onClick={handelSubmit}>{assignloading ? "loading...":"Assign"}</button>
+          <button disabled={assignloading} onClick={handelSubmit}>{assignloading ? <Loading/>:"Assign"}</button>
 
 
         </div >
